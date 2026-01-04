@@ -227,7 +227,7 @@ h1 {
   <div class="subtitle">Blend steroid solution calculator (up to 3 compounds)</div>
 
   <div class="links">
-    <a href="dinfarcalc.html">Single Compound</a>
+    <a href="index.html">Single Compound</a>
     <a href="dinfarblend.html" class="active">Blend Calculator</a>
   </div>
 
@@ -627,7 +627,7 @@ function goToSingle() {
     extraPct: document.getElementById('bcPct').value
   };
   localStorage.setItem('importedBlendToSingle', JSON.stringify(recipe));
-  window.location.href = 'dinfarcalc.html';
+  window.location.href = 'index.html';
 }
 
 
@@ -782,3 +782,4 @@ document.getElementById('oil').addEventListener('change', calc);
 
 </body>
 </html>
+
