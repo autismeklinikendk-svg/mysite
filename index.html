@@ -248,6 +248,7 @@ h1 {
           <option value="test-susp">Testosterone Suspension (water-based)</option>
           <option value="tren-a">Trenbolone Acetate</option>
           <option value="tren-e">Trenbolone Enanthate</option>
+          <option value="tren-e">Trenbolone Hex</option>
           <option value="deca">Nandrolone Decanoate (Deca)</option>
           <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
           <option value="eq">Boldenone Undecylenate (EQ)</option>
@@ -328,6 +329,14 @@ h1 {
           <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
           <option value="peg400">PEG 400 (1.128 g/ml)</option>
           <option value="dmso">DMSO (1.10 g/ml)</option>
+          <option value="castor">Castor Oil (~0.96 g/ml)</option>
+          <option value="gso">Grapeseed Oil (GSO) (~0.92 g/ml)</option>
+          <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
+          <option value="mct">MCT Oil (~0.95 g/ml)</option>
+          <option value="mig840">Miglyol 840 (~0.94 g/ml)</option>
+          <option value="mig812">Miglyol 812N (0.95 g/ml)</option>
+          <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
+          <option value="ethyl-lactate">Ethyl L-Lactate (1.035 g/ml)</option>
           <option value="custom">Custom (manual density)</option>
         </select>
       </div>
@@ -447,23 +456,26 @@ const displacements = {
   "test-iso": 0.935,
   "test-deca": 0.962,
   "test-susp": 1.000,
+  "test-undecanoate": 0.97,
   "tren-a": 0.848,
   "tren-e": 0.909,
+  "tren-hex": 0.909,
+  "nandrolone-base": 0.89,
   "deca": 0.962,
-  "npp": 0.909,
-  "eq": 0.909,
+  "npp": 0.88,
+  "eq": 0.95,
   "bold-cyp": 0.909,
   "masteron-p": 0.935,
-  "masteron-e": 1.000,
-  "primo-e": 0.909,
+  "masteron-e": 0.909,
+  "primo-e": 0.95,
   "trestolone": 0.900,
   "trestolone-a": 0.901,
-  "dhb": 0.909,
-  "winstrol": 0.750,
-  "dbol": 0.909,
-  "anadrol": 0.909,
-  "anavar": 0.909,
-  "tbol": 0.909,
+  "dhb": 0.97,
+  "winstrol": 0.9,
+  "dbol": 0.93,
+  "anadrol": 0.86,
+  "anavar": 0.9,
+  "tbol": 0.83,
   "sdrol": 0.909,
   "proviron": 0.909,
   "yk11": 0.820
@@ -655,3 +667,4 @@ document.getElementById('oil').addEventListener('change', calc);
 
 </body>
 </html>
+
