@@ -137,7 +137,7 @@ h1 {
 
 .results {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 18px;
 }
 
@@ -147,7 +147,6 @@ h1 {
   border-radius: 14px;
   padding: 20px;
   text-align: center;
-  min-height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -163,6 +162,14 @@ h1 {
 .result strong {
   font-size: 28px;
   color: var(--accent);
+}
+
+.final-yield {
+  grid-column: 1 / -1;
+  background: rgba(196,30,58,0.2);
+  border: 2px solid var(--accent);
+  padding: 30px;
+  font-size: 32px;
 }
 
 .chart-container {
@@ -204,13 +211,7 @@ h1 {
   text-align: right;
 }
 
-@media (max-width: 1000px) {
-  .results {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .content {
     grid-template-columns: 1fr;
   }
@@ -359,19 +360,11 @@ h1 {
 
     <div class="outputs">
       <div class="results">
+        <!-- Left: What you add to the brew -->
         <div class="result">
           <span>Powder Weight</span>
           <strong id="powder">0 g</strong>
         </div>
-        <div class="result">
-          <span>Compound Volume</span>
-          <strong id="compoundVol">0 ml</strong>
-        </div>
-        <div class="result">
-          <span>Total Brew Volume</span>
-          <strong id="totalBrew">0 ml</strong>
-        </div>
-
         <div class="result">
           <span>BA Volume</span>
           <strong id="baVol">0 ml</strong>
@@ -381,11 +374,6 @@ h1 {
           <strong id="baWeight">0 g</strong>
         </div>
         <div class="result">
-          <span>Final Yield</span>
-          <strong id="finalYield">0 ml</strong>
-        </div>
-
-        <div class="result">
           <span>BB Volume</span>
           <strong id="bbVol">0 ml</strong>
         </div>
@@ -393,11 +381,6 @@ h1 {
           <span>BB Weight</span>
           <strong id="bbWeight">0 g</strong>
         </div>
-        <div class="result">
-          <span>Volume Check</span>
-          <strong id="checkVol">0 ml</strong>
-        </div>
-
         <div class="result">
           <span>Extra Solvent Volume</span>
           <strong id="bcVol">0 ml</strong>
@@ -410,10 +393,29 @@ h1 {
           <span>Carrier Volume</span>
           <strong id="oilVol">0 ml</strong>
         </div>
-
         <div class="result">
           <span>Carrier Weight</span>
           <strong id="oilWeight">0 g</strong>
+        </div>
+
+        <!-- Right: Info -->
+        <div class="result">
+          <span>Compound Volume</span>
+          <strong id="compoundVol">0 ml</strong>
+        </div>
+        <div class="result">
+          <span>Total Brew Volume</span>
+          <strong id="totalBrew">0 ml</strong>
+        </div>
+        <div class="result">
+          <span>Volume Check</span>
+          <strong id="checkVol">0 ml</strong>
+        </div>
+
+        <!-- Final Yield - Full width, only once -->
+        <div class="result final-yield">
+          <span>Final Yield</span>
+          <strong id="finalYield">0 ml</strong>
         </div>
       </div>
 
@@ -521,6 +523,7 @@ function goToBlend() {
   localStorage.setItem('importedSingleToBlend', JSON.stringify(recipe));
   window.location.href = 'dinfarblend.html';
 }
+
 
 
 function calc() {
@@ -652,5 +655,3 @@ document.getElementById('oil').addEventListener('change', calc);
 
 </body>
 </html>
-
-
