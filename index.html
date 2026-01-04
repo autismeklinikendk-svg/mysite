@@ -229,7 +229,6 @@ h1 {
   <div class="links">
     <a href="dinfarcalc.html" class="active">Single Compound</a>
     <a href="dinfarblend.html">Blend Calculator →</a>
-    <a href="dinfaroverdose.html">Overdose Calculator →</a>
   </div>
 
   <div class="content">
@@ -428,7 +427,6 @@ h1 {
     <button onclick="downloadPDF()">Download as PDF</button>
     <button onclick="downloadDOCX()">Download as DOCX</button>
     <button onclick="goToBlend()">Go to Blend Calc</button>
-    <button onclick="goToOverdose()">Go to Overdose Calc</button>
   </div>
 </div>
 
@@ -524,9 +522,6 @@ function goToBlend() {
   window.location.href = 'dinfarblend.html';
 }
 
-function goToOverdose() {
-  window.location.href = 'dinfaroverdose.html';
-}
 
 function calc() {
   showCustomFields();
@@ -657,3 +652,4 @@ document.getElementById('oil').addEventListener('change', calc);
 
 </body>
 </html>
+
