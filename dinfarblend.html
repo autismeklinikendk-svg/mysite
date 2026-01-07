@@ -15,11 +15,11 @@
   --accent: #c41e3a;
   --glass: rgba(0,0,0,0.65);
   --border: rgba(255,255,255,0.08);
-  --powder-color: #8B0000;      /* Dark red - powders */
-  --ba-color: #008000;          /* Green - BA */
-  --bb-color: #FFD700;          /* Gold yellow - BB */
-  --extra-solvent-color: #FF8C00; /* Orange - Extra Solvent */
-  --carrier-color: #DA70D6;     /* Bright purple - Carrier oils */
+  --powder-color: #8B0000;        /* Dark red */
+  --ba-color: #008000;            /* Green */
+  --bb-color: #FFD700;            /* Gold yellow */
+  --extra-solvent-color: #FF8C00; /* Orange */
+  --carrier-color: #DA70D6;       /* Bright purple */
 }
 
 * { box-sizing: border-box; font-family: Inter, system-ui, -apple-system, sans-serif; }
@@ -59,7 +59,6 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
 .result span { display: block; font-size: 13px; opacity: 0.7; margin-bottom: 8px; }
 .result strong { font-size: 28px; color: var(--accent); }
 
-/* Specific color classes */
 .result.powder strong { color: var(--powder-color); }
 .result.ba strong { color: var(--ba-color); }
 .result.bb strong { color: var(--bb-color); }
@@ -97,8 +96,291 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
 
   <div class="content">
     <div class="inputs">
-      <!-- All your input fields (same as last version with checkboxes) -->
-      <!-- ... (kept exactly the same) ... -->
+      <div class="field">
+        <label>Desired Final Volume (ml)</label>
+        <input id="totalVol" type="number" value="10" oninput="calc()">
+      </div>
+
+      <div class="field">
+        <label>Sterile Filter Pore Size</label>
+        <select id="filter" onchange="calc()">
+          <option value="none">No Filter Loss Compensation</option>
+          <option value="0.45">0.45µm (~0.8–1.2ml loss)</option>
+          <option value="0.22">0.22µm (~1.2–2.0ml loss)</option>
+          <option value="double">Double Filtration (0.45 + 0.22µm) (~2.0–3.0ml loss)</option>
+          <option value="custom">Custom Loss (ml)</option>
+        </select>
+      </div>
+
+      <div class="field" id="customLossField" style="display:none;">
+        <label>Custom Filter Loss (ml)</label>
+        <input id="customLoss" type="number" step="0.1" value="1.5" oninput="calc()">
+      </div>
+
+      <!-- Compound 1 -->
+      <div class="field">
+        <label>Compound 1</label>
+        <select id="compound1" onchange="updateDisplacement(1); calc()">
+          <option value="custom">Custom (manual displacement)</option>
+          <option value="test-base">Testosterone Base</option>
+          <option value="test-p">Testosterone Propionate</option>
+          <option value="test-phenyl">Testosterone Phenylpropionate</option>
+          <option value="test-c">Testosterone Cypionate</option>
+          <option value="test-e">Testosterone Enanthate</option>
+          <option value="test-iso">Testosterone Isocaproate</option>
+          <option value="test-deca">Testosterone Decanoate</option>
+          <option value="test-undecanoate">Testosterone Undecanoate</option>
+          <option value="test-susp">Testosterone Suspension (water-based)</option>
+          <option value="tren-a">Trenbolone Acetate</option>
+          <option value="tren-e">Trenbolone Enanthate</option>
+          <option value="tren-hex">Trenbolone Hexahydrobenzylcarbonate</option>
+          <option value="nandrolone-base">Nandrolone Base</option>
+          <option value="deca">Nandrolone Decanoate (Deca)</option>
+          <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
+          <option value="eq">Boldenone Undecylenate (EQ)</option>
+          <option value="bold-cyp">Boldenone Cypionate</option>
+          <option value="masteron-p">Drostanolone Propionate (Masteron P)</option>
+          <option value="masteron-e">Drostanolone Enanthate (Masteron E)</option>
+          <option value="primo-e">Methenolone Enanthate (Primobolan)</option>
+          <option value="trestolone">Trestolone (MENT)</option>
+          <option value="trestolone-a">Trestolone Acetate</option>
+          <option value="dhb">1-Testosterone Cypionate (DHB)</option>
+          <option value="winstrol">Winstrol (Stanozolol) - Injectable</option>
+          <option value="dbol">Dianabol (Methandrostenolone) - Injectable</option>
+          <option value="anadrol">Anadrol (Oxymetholone) - Injectable</option>
+          <option value="anavar">Anavar (Oxandrolone) - Injectable</option>
+          <option value="tbol">Turinabol (Chlorodehydromethyltestosterone) - Injectable</option>
+          <option value="sdrol">Superdrol (Methasterone) - Injectable</option>
+          <option value="proviron">Proviron (Mesterolone) - Injectable</option>
+          <option value="yk11">YK-11 - Injectable</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Compound 1 Conc (mg/ml)</label>
+        <input id="mgml1" type="number" value="150" oninput="calc()">
+      </div>
+
+      <div class="field">
+        <label>Compound 1 Displacement (ml/g)</label>
+        <input id="disp1" type="number" step="0.001" value="0.909" oninput="calc()">
+      </div>
+
+      <div class="field">
+        <label>Compound 1 Purity (%)</label>
+        <input id="purity1" type="number" value="100" oninput="calc()">
+      </div>
+
+      <!-- Compound 2 Checkbox -->
+      <div class="checkbox-field">
+        <input type="checkbox" id="enableCompound2" onchange="toggleCompound(2); calc()">
+        <label for="enableCompound2">Add Compound 2</label>
+      </div>
+
+      <div id="compound2Group" class="hidden">
+        <div class="field">
+          <label>Compound 2</label>
+          <select id="compound2" onchange="updateDisplacement(2); calc()">
+            <option value="custom">Custom (manual displacement)</option>
+            <option value="test-base">Testosterone Base</option>
+            <option value="test-p">Testosterone Propionate</option>
+            <option value="test-phenyl">Testosterone Phenylpropionate</option>
+            <option value="test-c">Testosterone Cypionate</option>
+            <option value="test-e">Testosterone Enanthate</option>
+            <option value="test-iso">Testosterone Isocaproate</option>
+            <option value="test-deca">Testosterone Decanoate</option>
+            <option value="test-undecanoate">Testosterone Undecanoate</option>
+            <option value="test-susp">Testosterone Suspension (water-based)</option>
+            <option value="tren-a">Trenbolone Acetate</option>
+            <option value="tren-e">Trenbolone Enanthate</option>
+            <option value="tren-hex">Trenbolone Hexahydrobenzylcarbonate</option>
+            <option value="nandrolone-base">Nandrolone Base</option>
+            <option value="deca">Nandrolone Decanoate (Deca)</option>
+            <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
+            <option value="eq">Boldenone Undecylenate (EQ)</option>
+            <option value="bold-cyp">Boldenone Cypionate</option>
+            <option value="masteron-p">Drostanolone Propionate (Masteron P)</option>
+            <option value="masteron-e">Drostanolone Enanthate (Masteron E)</option>
+            <option value="primo-e">Methenolone Enanthate (Primobolan)</option>
+            <option value="trestolone">Trestolone (MENT)</option>
+            <option value="trestolone-a">Trestolone Acetate</option>
+            <option value="dhb">1-Testosterone Cypionate (DHB)</option>
+            <option value="winstrol">Winstrol (Stanozolol) - Injectable</option>
+            <option value="dbol">Dianabol (Methandrostenolone) - Injectable</option>
+            <option value="anadrol">Anadrol (Oxymetholone) - Injectable</option>
+            <option value="anavar">Anavar (Oxandrolone) - Injectable</option>
+            <option value="tbol">Turinabol (Chlorodehydromethyltestosterone) - Injectable</option>
+            <option value="sdrol">Superdrol (Methasterone) - Injectable</option>
+            <option value="proviron">Proviron (Mesterolone) - Injectable</option>
+            <option value="yk11">YK-11 - Injectable</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Compound 2 Conc (mg/ml)</label>
+          <input id="mgml2" type="number" value="150" oninput="calc()">
+        </div>
+
+        <div class="field">
+          <label>Compound 2 Displacement (ml/g)</label>
+          <input id="disp2" type="number" step="0.001" value="0.909" oninput="calc()">
+        </div>
+
+        <div class="field">
+          <label>Compound 2 Purity (%)</label>
+          <input id="purity2" type="number" value="100" oninput="calc()">
+        </div>
+      </div>
+
+      <!-- Compound 3 Checkbox -->
+      <div class="checkbox-field">
+        <input type="checkbox" id="enableCompound3" onchange="toggleCompound(3); calc()">
+        <label for="enableCompound3">Add Compound 3</label>
+      </div>
+
+      <div id="compound3Group" class="hidden">
+        <div class="field">
+          <label>Compound 3</label>
+          <select id="compound3" onchange="updateDisplacement(3); calc()">
+            <option value="custom">Custom (manual displacement)</option>
+            <option value="test-base">Testosterone Base</option>
+            <option value="test-p">Testosterone Propionate</option>
+            <option value="test-phenyl">Testosterone Phenylpropionate</option>
+            <option value="test-c">Testosterone Cypionate</option>
+            <option value="test-e">Testosterone Enanthate</option>
+            <option value="test-iso">Testosterone Isocaproate</option>
+            <option value="test-deca">Testosterone Decanoate</option>
+            <option value="test-undecanoate">Testosterone Undecanoate</option>
+            <option value="test-susp">Testosterone Suspension (water-based)</option>
+            <option value="tren-a">Trenbolone Acetate</option>
+            <option value="tren-e">Trenbolone Enanthate</option>
+            <option value="tren-hex">Trenbolone Hexahydrobenzylcarbonate</option>
+            <option value="nandrolone-base">Nandrolone Base</option>
+            <option value="deca">Nandrolone Decanoate (Deca)</option>
+            <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
+            <option value="eq">Boldenone Undecylenate (EQ)</option>
+            <option value="bold-cyp">Boldenone Cypionate</option>
+            <option value="masteron-p">Drostanolone Propionate (Masteron P)</option>
+            <option value="masteron-e">Drostanolone Enanthate (Masteron E)</option>
+            <option value="primo-e">Methenolone Enanthate (Primobolan)</option>
+            <option value="trestolone">Trestolone (MENT)</option>
+            <option value="trestolone-a">Trestolone Acetate</option>
+            <option value="dhb">1-Testosterone Cypionate (DHB)</option>
+            <option value="winstrol">Winstrol (Stanozolol) - Injectable</option>
+            <option value="dbol">Dianabol (Methandrostenolone) - Injectable</option>
+            <option value="anadrol">Anadrol (Oxymetholone) - Injectable</option>
+            <option value="anavar">Anavar (Oxandrolone) - Injectable</option>
+            <option value="tbol">Turinabol (Chlorodehydromethyltestosterone) - Injectable</option>
+            <option value="sdrol">Superdrol (Methasterone) - Injectable</option>
+            <option value="proviron">Proviron (Mesterolone) - Injectable</option>
+            <option value="yk11">YK-11 - Injectable</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Compound 3 Conc (mg/ml)</label>
+          <input id="mgml3" type="number" value="0" oninput="calc()">
+        </div>
+
+        <div class="field">
+          <label>Compound 3 Displacement (ml/g)</label>
+          <input id="disp3" type="number" step="0.001" value="0.909" oninput="calc()">
+        </div>
+
+        <div class="field">
+          <label>Compound 3 Purity (%)</label>
+          <input id="purity3" type="number" value="100" oninput="calc()">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Benzyl Alcohol (BA) %</label>
+        <input id="baPct" type="number" value="2" oninput="calc()">
+      </div>
+
+      <div class="field">
+        <label>Benzyl Benzoate (BB) %</label>
+        <input id="bbPct" type="number" value="15" oninput="calc()">
+      </div>
+
+      <!-- Extra Solvent Checkbox -->
+      <div class="checkbox-field">
+        <input type="checkbox" id="enableExtraSolvent" onchange="toggleExtraSolvent(); calc()">
+        <label for="enableExtraSolvent">Add Extra Solvent (Guaiacol, PEG, etc.)</label>
+      </div>
+
+      <div id="extraSolventGroup" class="hidden">
+        <div class="field">
+          <label>Extra Solvent %</label>
+          <input id="extraSolventPct" type="number" value="0" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Extra Solvent Type</label>
+          <select id="extraSolventType" onchange="calc()">
+            <option value="none">None</option>
+            <option value="guaiacol">Guaiacol (1.129 g/ml)</option>
+            <option value="peg400">PEG 400 (1.128 g/ml)</option>
+            <option value="dmso">DMSO (1.10 g/ml)</option>
+            <option value="ethyl-lactate">Ethyl L-Lactate (1.035 g/ml)</option>
+            <option value="custom">Custom (manual density)</option>
+          </select>
+        </div>
+        <div class="field" id="customExtraSolventDensityField" style="display:none;">
+          <label>Custom Extra Solvent Density (g/ml)</label>
+          <input id="customExtraSolventDensity" type="number" step="0.001" value="1.1" oninput="calc()">
+        </div>
+      </div>
+
+      <!-- Main Carrier -->
+      <div class="field">
+        <label>Main Carrier Oil</label>
+        <select id="mainCarrier" onchange="calc()">
+          <option value="gso">Grapeseed Oil (GSO) (~0.92 g/ml)</option>
+          <option value="mct">MCT Oil (~0.95 g/ml)</option>
+          <option value="castor">Castor Oil (~0.96 g/ml)</option>
+          <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
+          <option value="mig840">Miglyol 840 (~0.94 g/ml)</option>
+          <option value="mig812">Miglyol 812N (0.95 g/ml)</option>
+          <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
+          <option value="custom">Custom (manual density)</option>
+        </select>
+      </div>
+
+      <div class="field" id="customMainCarrierField" style="display:none;">
+        <label>Custom Main Carrier Density (g/ml)</label>
+        <input id="customMainCarrierDensity" type="number" step="0.001" value="0.92" oninput="calc()">
+      </div>
+
+      <!-- Second Carrier Checkbox -->
+      <div class="checkbox-field">
+        <input type="checkbox" id="enableSecondCarrier" onchange="toggleSecondCarrier(); calc()">
+        <label for="enableSecondCarrier">Mix with Second Carrier Oil</label>
+      </div>
+
+      <div id="secondCarrierGroup" class="hidden">
+        <div class="field">
+          <label>Carrier Mix % (second oil)</label>
+          <input id="carrierMixPct" type="number" value="0" min="0" max="100" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Second Carrier Oil</label>
+          <select id="secondCarrier" onchange="calc()">
+            <option value="none">None</option>
+            <option value="castor">Castor Oil (~0.96 g/ml)</option>
+            <option value="gso">Grapeseed Oil (GSO) (~0.92 g/ml)</option>
+            <option value="mct">MCT Oil (~0.95 g/ml)</option>
+            <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
+            <option value="mig840">Miglyol 840 (~0.94 g/ml)</option>
+            <option value="mig812">Miglyol 812N (0.95 g/ml)</option>
+            <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
+            <option value="custom">Custom (manual density)</option>
+          </select>
+        </div>
+        <div class="field" id="customSecondCarrierField" style="display:none;">
+          <label>Custom Second Carrier Density (g/ml)</label>
+          <input id="customSecondCarrierDensity" type="number" step="0.001" value="0.96" oninput="calc()">
+        </div>
+      </div>
     </div>
 
     <div class="outputs">
@@ -200,16 +482,256 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
   Dinfar Brew ©
 </div>
 
-<!-- Your full script (with your displacement values, checkboxes, vanishing results, etc.) remains the same -->
-<!-- Just update the chart colors if you want to match: -->
-
 <script>
-/* ... your full script ... */
+const displacements = {
+  "custom": 0.909,
+  "test-base": 0.909,
+  "test-p": 0.916,
+  "test-phenyl": 0.954,
+  "test-c": 0.909,
+  "test-e": 0.943,
+  "test-iso": 0.935,
+  "test-deca": 0.962,
+  "test-susp": 1.000,
+  "test-undecanoate": 0.97,
+  "tren-a": 0.848,
+  "tren-e": 0.909,
+  "tren-hex": 0.909,
+  "nandrolone-base": 0.89,
+  "deca": 0.962,
+  "npp": 0.877,
+  "eq": 0.952,
+  "bold-cyp": 0.909,
+  "masteron-p": 0.935,
+  "masteron-e": 0.962,
+  "primo-e": 0.952,
+  "trestolone": 0.900,
+  "trestolone-a": 0.901,
+  "dhb": 0.97,
+  "winstrol": 0.885,
+  "dbol": 0.892,
+  "anadrol": 0.86,
+  "anavar": 0.9,
+  "tbol": 0.83,
+  "sdrol": 0.909,
+  "proviron": 0.909,
+  "yk11": 0.820
+};
 
-/* Inside calc(), update chart colors to match: */
-const colors = ['#8B0000', '#008000', '#FFD700', extraSolventVol > 0.01 ? '#FF8C00' : null, '#DA70D6'].filter(Boolean);
+const densities = {
+  ba: 1.044,
+  bb: 1.118,
+  castor: 0.96,
+  gso: 0.92,
+  sesame: 0.92,
+  mct: 0.95,
+  mig840: 0.94,
+  mig812: 0.95,
+  eo: 0.87,
+  'ethyl-lactate': 1.035,
+  guaiacol: 1.129,
+  peg400: 1.128,
+  dmso: 1.10,
+  none: 1.0
+};
 
-/* Rest unchanged */
+let chart;
+
+function updateDisplacement(num) {
+  const select = document.getElementById(`compound${num}`);
+  const dispInput = document.getElementById(`disp${num}`);
+  const selected = select.value;
+  
+  if (selected !== "custom") {
+    dispInput.value = displacements[selected].toFixed(3);
+  }
+  calc();
+}
+
+function toggleCompound(num) {
+  const checked = document.getElementById(`enableCompound${num}`).checked;
+  document.getElementById(`compound${num}Group`).classList.toggle('hidden', !checked);
+  document.getElementById(`powder${num}Result`).classList.toggle('hidden', !checked);
+  if (!checked) {
+    document.getElementById(`mgml${num}`).value = 0;
+  }
+  calc();
+}
+
+function toggleExtraSolvent() {
+  const checked = document.getElementById('enableExtraSolvent').checked;
+  document.getElementById('extraSolventGroup').classList.toggle('hidden', !checked);
+  document.getElementById('extraSolventVolResult').classList.toggle('hidden', !checked);
+  document.getElementById('extraSolventWeightResult').classList.toggle('hidden', !checked);
+  if (!checked) {
+    document.getElementById('extraSolventPct').value = 0;
+    document.getElementById('extraSolventType').value = 'none';
+  }
+  calc();
+}
+
+function toggleSecondCarrier() {
+  const checked = document.getElementById('enableSecondCarrier').checked;
+  document.getElementById('secondCarrierGroup').classList.toggle('hidden', !checked);
+  document.getElementById('secondCarrierVolResult').classList.toggle('hidden', !checked);
+  document.getElementById('secondCarrierWeightResult').classList.toggle('hidden', !checked);
+  if (!checked) {
+    document.getElementById('carrierMixPct').value = 0;
+    document.getElementById('secondCarrier').value = 'none';
+  }
+  calc();
+}
+
+function showCustomFields() {
+  document.getElementById('customLossField').style.display = document.getElementById('filter').value === 'custom' ? 'block' : 'none';
+  document.getElementById('customExtraSolventDensityField').style.display = (document.getElementById('extraSolventType').value === 'custom' && document.getElementById('enableExtraSolvent').checked) ? 'block' : 'none';
+  document.getElementById('customMainCarrierField').style.display = document.getElementById('mainCarrier').value === 'custom' ? 'block' : 'none';
+  document.getElementById('customSecondCarrierField').style.display = (document.getElementById('secondCarrier').value === 'custom' && document.getElementById('enableSecondCarrier').checked) ? 'block' : 'none';
+}
+
+function calc() {
+  showCustomFields();
+
+  const desiredVol = parseFloat(document.getElementById('totalVol').value) || 0;
+
+  const filterType = document.getElementById('filter').value;
+  let filterLoss = 0;
+  if (filterType === '0.45') filterLoss = 1.0;
+  else if (filterType === '0.22') filterLoss = 1.6;
+  else if (filterType === 'double') filterLoss = 2.5;
+  else if (filterType === 'custom') filterLoss = parseFloat(document.getElementById('customLoss').value) || 0;
+
+  const totalBrewVol = desiredVol + filterLoss;
+
+  const enable2 = document.getElementById('enableCompound2').checked;
+  const enable3 = document.getElementById('enableCompound3').checked;
+
+  const conc1 = parseFloat(document.getElementById('mgml1').value) || 0;
+  const disp1 = parseFloat(document.getElementById('disp1').value) || 0;
+  const purity1 = parseFloat(document.getElementById('purity1').value) || 100;
+
+  const conc2 = enable2 ? parseFloat(document.getElementById('mgml2').value) || 0 : 0;
+  const disp2 = enable2 ? parseFloat(document.getElementById('disp2').value) || 0 : 0;
+  const purity2 = enable2 ? parseFloat(document.getElementById('purity2').value) || 100 : 100;
+
+  const conc3 = enable3 ? parseFloat(document.getElementById('mgml3').value) || 0 : 0;
+  const disp3 = enable3 ? parseFloat(document.getElementById('disp3').value) || 0 : 0;
+  const purity3 = enable3 ? parseFloat(document.getElementById('purity3').value) || 100 : 100;
+
+  let powder1 = (totalBrewVol * conc1 / 1000) / (purity1 / 100);
+  powder1 = conc1 > 0 ? powder1 : 0;
+
+  let powder2 = (totalBrewVol * conc2 / 1000) / (purity2 / 100);
+  powder2 = conc2 > 0 ? powder2 : 0;
+
+  let powder3 = (totalBrewVol * conc3 / 1000) / (purity3 / 100);
+  powder3 = conc3 > 0 ? powder3 : 0;
+
+  const compoundVol1 = powder1 * disp1;
+  const compoundVol2 = powder2 * disp2;
+  const compoundVol3 = powder3 * disp3;
+  const totalCompoundVol = compoundVol1 + compoundVol2 + compoundVol3;
+
+  const baPct = parseFloat(document.getElementById('baPct').value) || 0;
+  const bbPct = parseFloat(document.getElementById('bbPct').value) || 0;
+  const extraSolventPct = document.getElementById('enableExtraSolvent').checked ? parseFloat(document.getElementById('extraSolventPct').value) || 0 : 0;
+
+  const baVol = totalBrewVol * (baPct / 100);
+  const bbVol = totalBrewVol * (bbPct / 100);
+  const extraSolventVol = totalBrewVol * (extraSolventPct / 100);
+
+  const remainingVol = totalBrewVol - totalCompoundVol - baVol - bbVol - extraSolventVol;
+
+  const carrierMixPct = document.getElementById('enableSecondCarrier').checked ? parseFloat(document.getElementById('carrierMixPct').value) || 0 : 0;
+
+  const mainCarrierRatio = (100 - carrierMixPct) / 100;
+  const secondCarrierRatio = carrierMixPct / 100;
+
+  const mainCarrierVol = remainingVol * mainCarrierRatio;
+  const secondCarrierVol = remainingVol * secondCarrierRatio;
+
+  let mainCarrierDensity = densities[document.getElementById('mainCarrier').value] || 0.92;
+  if (document.getElementById('mainCarrier').value === 'custom') mainCarrierDensity = parseFloat(document.getElementById('customMainCarrierDensity').value) || 0.92;
+
+  let secondCarrierDensity = densities[document.getElementById('secondCarrier').value] || 0.92;
+  if (document.getElementById('secondCarrier').value === 'custom') secondCarrierDensity = parseFloat(document.getElementById('customSecondCarrierDensity').value) || 0.92;
+
+  let extraSolventDensity = densities[document.getElementById('extraSolventType').value] || 1.0;
+  if (document.getElementById('extraSolventType').value === 'custom') extraSolventDensity = parseFloat(document.getElementById('customExtraSolventDensity').value) || 1.0;
+
+  const baWeight = baVol * densities.ba;
+  const bbWeight = bbVol * densities.bb;
+  const extraSolventWeight = extraSolventVol * extraSolventDensity;
+  const mainCarrierWeight = mainCarrierVol * mainCarrierDensity;
+  const secondCarrierWeight = secondCarrierVol * secondCarrierDensity;
+
+  const check = totalCompoundVol + baVol + bbVol + extraSolventVol + mainCarrierVol + secondCarrierVol;
+
+  document.getElementById('powder1').textContent = powder1.toFixed(3) + ' g';
+  document.getElementById('powder2').textContent = powder2.toFixed(3) + ' g';
+  document.getElementById('powder3').textContent = powder3.toFixed(3) + ' g';
+  document.getElementById('compoundVol').textContent = totalCompoundVol.toFixed(3) + ' ml';
+  document.getElementById('baVol').textContent = baVol.toFixed(2) + ' ml';
+  document.getElementById('baWeight').textContent = baWeight.toFixed(3) + ' g';
+  document.getElementById('bbVol').textContent = bbVol.toFixed(2) + ' ml';
+  document.getElementById('bbWeight').textContent = bbWeight.toFixed(3) + ' g';
+  document.getElementById('extraSolventVol').textContent = extraSolventVol.toFixed(2) + ' ml';
+  document.getElementById('extraSolventWeight').textContent = extraSolventWeight.toFixed(3) + ' g';
+  document.getElementById('mainCarrierVol').textContent = mainCarrierVol.toFixed(2) + ' ml';
+  document.getElementById('mainCarrierWeight').textContent = mainCarrierWeight.toFixed(3) + ' g';
+  document.getElementById('secondCarrierVol').textContent = secondCarrierVol.toFixed(2) + ' ml';
+  document.getElementById('secondCarrierWeight').textContent = secondCarrierWeight.toFixed(3) + ' g';
+  document.getElementById('totalBrew').textContent = totalBrewVol.toFixed(2) + ' ml';
+  document.getElementById('finalYield').textContent = desiredVol.toFixed(2) + ' ml';
+  document.getElementById('checkVol').textContent = check.toFixed(2) + ' ml';
+
+  const ctx = document.getElementById('pieChart').getContext('2d');
+  const carrierTotal = mainCarrierVol + secondCarrierVol;
+  const data = [totalCompoundVol, baVol, bbVol, extraSolventVol > 0.01 ? extraSolventVol : 0, carrierTotal];
+  const labels = ['Compound Displacement', 'BA', 'BB', extraSolventVol > 0.01 ? 'Extra Solvent' : null, 'Carrier Oil'].filter(Boolean);
+  const colors = ['#8B0000', '#008000', '#FFD700', extraSolventVol > 0.01 ? '#FF8C00' : null, '#DA70D6'].filter(Boolean);
+
+  const filteredData = data.filter(val => val > 0.01);
+  const filteredLabels = labels.filter((_, i) => data[i] > 0.01);
+  const filteredColors = colors.filter((_, i) => data[i] > 0.01);
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: filteredLabels,
+      datasets: [{
+        data: filteredData,
+        backgroundColor: filteredColors,
+        borderColor: '#111',
+        borderWidth: 3,
+        hoverBorderWidth: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '65%',
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#fff', font: { size: 15 }, padding: 20, usePointStyle: true } },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const value = context.parsed;
+              const total = context.dataset.data.reduce((a, b) => a + b, 0);
+              const percentage = ((value / total) * 100).toFixed(1);
+              return `${context.label}: ${value.toFixed(3)} ml (${percentage}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+updateDisplacement(1);
+calc();
 </script>
 
 </body>
