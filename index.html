@@ -15,9 +15,11 @@
   --accent: #c41e3a;
   --glass: rgba(0,0,0,0.65);
   --border: rgba(255,255,255,0.08);
-  --powder-color: #8B0000;
-  --solvent-color: #006400;
-  --carrier-color: #00008B;
+  --powder-color: #8B0000;        /* Dark red */
+  --ba-color: #008000;            /* Green */
+  --bb-color: #FFD700;            /* Gold yellow */
+  --extra-solvent-color: #FF8C00; /* Orange */
+  --carrier-color: #DA70D6;       /* Bright purple */
 }
 
 * { box-sizing: border-box; font-family: Inter, system-ui, -apple-system, sans-serif; }
@@ -58,7 +60,9 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
 .result strong { font-size: 28px; color: var(--accent); }
 
 .result.powder strong { color: var(--powder-color); }
-.result.solvent strong { color: var(--solvent-color); }
+.result.ba strong { color: var(--ba-color); }
+.result.bb strong { color: var(--bb-color); }
+.result.extra-solvent strong { color: var(--extra-solvent-color); }
 .result.carrier strong { color: var(--carrier-color); }
 
 .final-yield { grid-column: 1 / -1; background: rgba(196,30,58,0.2); border: 2px solid var(--accent); padding: 30px; font-size: 32px; }
@@ -263,28 +267,30 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
           <span>Powder Weight</span>
           <strong id="powder">0 g</strong>
         </div>
-        <div class="result solvent">
+
+        <div class="result ba">
           <span>BA Volume</span>
           <strong id="baVol">0 ml</strong>
         </div>
-        <div class="result solvent">
+        <div class="result ba">
           <span>BA Weight</span>
           <strong id="baWeight">0 g</strong>
         </div>
-        <div class="result solvent">
+
+        <div class="result bb">
           <span>BB Volume</span>
           <strong id="bbVol">0 ml</strong>
         </div>
-        <div class="result solvent">
+        <div class="result bb">
           <span>BB Weight</span>
           <strong id="bbWeight">0 g</strong>
         </div>
 
-        <div class="result solvent hidden" id="extraSolventVolResult">
+        <div class="result extra-solvent hidden" id="extraSolventVolResult">
           <span>Extra Solvent Volume</span>
           <strong id="extraSolventVol">0 ml</strong>
         </div>
-        <div class="result solvent hidden" id="extraSolventWeightResult">
+        <div class="result extra-solvent hidden" id="extraSolventWeightResult">
           <span>Extra Solvent Weight</span>
           <strong id="extraSolventWeight">0 g</strong>
         </div>
@@ -519,7 +525,7 @@ function calc() {
   const carrierTotal = mainCarrierVol + secondCarrierVol;
   const data = [compoundVol, baVol, bbVol, extraSolventVol > 0.01 ? extraSolventVol : 0, carrierTotal];
   const labels = ['Compound', 'BA', 'BB', extraSolventVol > 0.01 ? 'Extra Solvent' : null, 'Carrier Oil'].filter(Boolean);
-  const colors = ['#c41e3a', '#e91e63', '#ff9800', extraSolventVol > 0.01 ? '#ffeb3b' : null, '#4caf50'].filter(Boolean);
+  const colors = ['#8B0000', '#008000', '#FFD700', extraSolventVol > 0.01 ? '#FF8C00' : null, '#DA70D6'].filter(Boolean);
 
   const filteredData = data.filter(val => val > 0.01);
   const filteredLabels = labels.filter((_, i) => data[i] > 0.01);
