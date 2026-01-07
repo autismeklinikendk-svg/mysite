@@ -15,6 +15,9 @@
   --accent: #c41e3a;
   --glass: rgba(0,0,0,0.65);
   --border: rgba(255,255,255,0.08);
+  --powder-color: #8B0000;     /* Dark red */
+  --solvent-color: #006400;    /* Dark green */
+  --carrier-color: #00008B;    /* Dark blue */
 }
 
 * {
@@ -62,11 +65,25 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
 .field input, .field select { width: 100%; padding: 18px 16px; border-radius: 14px; border: 1px solid var(--border); background: rgba(0,0,0,0.55); color: #fff; font-size: 18px; font-weight: 500; }
 .field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
 
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  margin: 10px 0;
+}
+
 .outputs { display: flex; flex-direction: column; gap: 30px; }
 .results { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 .result { background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 14px; padding: 20px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
 .result span { display: block; font-size: 13px; opacity: 0.7; margin-bottom: 8px; }
 .result strong { font-size: 28px; color: var(--accent); }
+
+/* Color classes */
+.result.powder strong { color: var(--powder-color); }
+.result.solvent strong { color: var(--solvent-color); }
+.result.carrier strong { color: var(--carrier-color); }
+
 .final-yield { grid-column: 1 / -1; background: rgba(196,30,58,0.2); border: 2px solid var(--accent); padding: 30px; font-size: 32px; }
 
 .chart-container { position: relative; height: 380px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
@@ -81,6 +98,8 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
   .content { grid-template-columns: 1fr; }
   .results { grid-template-columns: 1fr; }
 }
+
+.hidden { display: none !important; }
 </style>
 </head>
 <body>
@@ -177,28 +196,35 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
         <input id="bbPct" type="number" value="15" oninput="calc()">
       </div>
 
-      <div class="field">
-        <label>Extra Solvent % (e.g. Guaiacol, PEG)</label>
-        <input id="extraSolventPct" type="number" value="0" oninput="calc()">
+      <!-- Checkbox for Extra Solvent -->
+      <div class="checkbox-field">
+        <input type="checkbox" id="enableExtraSolvent" onchange="toggleExtraSolvent(); calc()">
+        <label for="enableExtraSolvent">Add Extra Solvent (Guaiacol, PEG, etc.)</label>
       </div>
 
-      <div class="field">
-        <label>Extra Solvent Type</label>
-        <select id="extraSolventType" onchange="calc()">
-          <option value="none">None</option>
-          <option value="guaiacol">Guaiacol (1.129 g/ml)</option>
-          <option value="peg400">PEG 400 (1.128 g/ml)</option>
-          <option value="dmso">DMSO (1.10 g/ml)</option>
-          <option value="ethyl-lactate">Ethyl L-Lactate (1.035 g/ml)</option>
-          <option value="custom">Custom (manual density)</option>
-        </select>
+      <div id="extraSolventGroup" class="hidden">
+        <div class="field">
+          <label>Extra Solvent %</label>
+          <input id="extraSolventPct" type="number" value="0" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Extra Solvent Type</label>
+          <select id="extraSolventType" onchange="calc()">
+            <option value="none">None</option>
+            <option value="guaiacol">Guaiacol (1.129 g/ml)</option>
+            <option value="peg400">PEG 400 (1.128 g/ml)</option>
+            <option value="dmso">DMSO (1.10 g/ml)</option>
+            <option value="ethyl-lactate">Ethyl L-Lactate (1.035 g/ml)</option>
+            <option value="custom">Custom (manual density)</option>
+          </select>
+        </div>
+        <div class="field" id="customExtraSolventDensityField" style="display:none;">
+          <label>Custom Extra Solvent Density (g/ml)</label>
+          <input id="customExtraSolventDensity" type="number" step="0.001" value="1.1" oninput="calc()">
+        </div>
       </div>
 
-      <div class="field" id="customExtraSolventDensityField" style="display:none;">
-        <label>Custom Extra Solvent Density (g/ml)</label>
-        <input id="customExtraSolventDensity" type="number" step="0.001" value="1.1" oninput="calc()">
-      </div>
-
+      <!-- Main Carrier -->
       <div class="field">
         <label>Main Carrier Oil</label>
         <select id="mainCarrier" onchange="calc()">
@@ -218,76 +244,82 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
         <input id="customMainCarrierDensity" type="number" step="0.001" value="0.92" oninput="calc()">
       </div>
 
-      <div class="field">
-        <label>Carrier Mix % (second oil)</label>
-        <input id="carrierMixPct" type="number" value="0" min="0" max="100" oninput="calc()">
+      <!-- Checkbox for Second Carrier -->
+      <div class="checkbox-field">
+        <input type="checkbox" id="enableSecondCarrier" onchange="toggleSecondCarrier(); calc()">
+        <label for="enableSecondCarrier">Mix with Second Carrier Oil</label>
       </div>
 
-      <div class="field">
-        <label>Second Carrier Oil (for mix)</label>
-        <select id="secondCarrier" onchange="calc()">
-          <option value="none">None</option>
-          <option value="castor">Castor Oil (~0.96 g/ml)</option>
-          <option value="gso">Grapeseed Oil (GSO) (~0.92 g/ml)</option>
-          <option value="mct">MCT Oil (~0.95 g/ml)</option>
-          <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
-          <option value="mig840">Miglyol 840 (~0.94 g/ml)</option>
-          <option value="mig812">Miglyol 812N (0.95 g/ml)</option>
-          <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
-          <option value="custom">Custom (manual density)</option>
-        </select>
-      </div>
-
-      <div class="field" id="customSecondCarrierField" style="display:none;">
-        <label>Custom Second Carrier Density (g/ml)</label>
-        <input id="customSecondCarrierDensity" type="number" step="0.001" value="0.96" oninput="calc()">
+      <div id="secondCarrierGroup" class="hidden">
+        <div class="field">
+          <label>Carrier Mix % (second oil)</label>
+          <input id="carrierMixPct" type="number" value="0" min="0" max="100" oninput="calc()">
+        </div>
+        <div class="field">
+          <label>Second Carrier Oil</label>
+          <select id="secondCarrier" onchange="calc()">
+            <option value="none">None</option>
+            <option value="castor">Castor Oil (~0.96 g/ml)</option>
+            <option value="gso">Grapeseed Oil (GSO) (~0.92 g/ml)</option>
+            <option value="mct">MCT Oil (~0.95 g/ml)</option>
+            <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
+            <option value="mig840">Miglyol 840 (~0.94 g/ml)</option>
+            <option value="mig812">Miglyol 812N (0.95 g/ml)</option>
+            <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
+            <option value="custom">Custom (manual density)</option>
+          </select>
+        </div>
+        <div class="field" id="customSecondCarrierField" style="display:none;">
+          <label>Custom Second Carrier Density (g/ml)</label>
+          <input id="customSecondCarrierDensity" type="number" step="0.001" value="0.96" oninput="calc()">
+        </div>
       </div>
     </div>
 
     <div class="outputs">
       <div class="results">
         <!-- Left: What you add -->
-        <div class="result">
+        <div class="result powder">
           <span>Powder Weight</span>
           <strong id="powder">0 g</strong>
         </div>
-        <div class="result">
+        <div class="result solvent">
           <span>BA Volume</span>
           <strong id="baVol">0 ml</strong>
         </div>
-        <div class="result">
+        <div class="result solvent">
           <span>BA Weight</span>
           <strong id="baWeight">0 g</strong>
         </div>
-        <div class="result">
+        <div class="result solvent">
           <span>BB Volume</span>
           <strong id="bbVol">0 ml</strong>
         </div>
-        <div class="result">
+        <div class="result solvent">
           <span>BB Weight</span>
           <strong id="bbWeight">0 g</strong>
         </div>
-        <div class="result">
+        <div class="result solvent" id="extraSolventResult">
           <span>Extra Solvent Volume</span>
           <strong id="extraSolventVol">0 ml</strong>
         </div>
-        <div class="result">
+        <div class="result solvent" id="extraSolventWeightResult">
           <span>Extra Solvent Weight</span>
           <strong id="extraSolventWeight">0 g</strong>
         </div>
-        <div class="result">
+        <div class="result carrier">
           <span>Main Carrier Volume</span>
           <strong id="mainCarrierVol">0 ml</strong>
         </div>
-        <div class="result">
+        <div class="result carrier">
           <span>Main Carrier Weight</span>
           <strong id="mainCarrierWeight">0 g</strong>
         </div>
-        <div class="result">
+        <div class="result carrier" id="secondCarrierResult">
           <span>Second Carrier Volume</span>
           <strong id="secondCarrierVol">0 ml</strong>
         </div>
-        <div class="result">
+        <div class="result carrier" id="secondCarrierWeightResult">
           <span>Second Carrier Weight</span>
           <strong id="secondCarrierWeight">0 g</strong>
         </div>
@@ -393,15 +425,35 @@ function updateDisplacement() {
   calc();
 }
 
+function toggleExtraSolvent() {
+  const checked = document.getElementById('enableExtraSolvent').checked;
+  document.getElementById('extraSolventGroup').classList.toggle('hidden', !checked);
+  document.getElementById('extraSolventResult').classList.toggle('hidden', !checked);
+  document.getElementById('extraSolventWeightResult').classList.toggle('hidden', !checked);
+  if (!checked) {
+    document.getElementById('extraSolventPct').value = 0;
+    document.getElementById('extraSolventType').value = 'none';
+  }
+  calc();
+}
+
+function toggleSecondCarrier() {
+  const checked = document.getElementById('enableSecondCarrier').checked;
+  document.getElementById('secondCarrierGroup').classList.toggle('hidden', !checked);
+  document.getElementById('secondCarrierResult').classList.toggle('hidden', !checked);
+  document.getElementById('secondCarrierWeightResult').classList.toggle('hidden', !checked);
+  if (!checked) {
+    document.getElementById('carrierMixPct').value = 0;
+    document.getElementById('secondCarrier').value = 'none';
+  }
+  calc();
+}
+
 function showCustomFields() {
-  // Custom filter
   document.getElementById('customLossField').style.display = document.getElementById('filter').value === 'custom' ? 'block' : 'none';
-  // Custom extra solvent
-  document.getElementById('customExtraSolventDensityField').style.display = document.getElementById('extraSolventType').value === 'custom' ? 'block' : 'none';
-  // Custom main carrier
+  document.getElementById('customExtraSolventDensityField').style.display = (document.getElementById('extraSolventType').value === 'custom' && document.getElementById('enableExtraSolvent').checked) ? 'block' : 'none';
   document.getElementById('customMainCarrierField').style.display = document.getElementById('mainCarrier').value === 'custom' ? 'block' : 'none';
-  // Custom second carrier
-  document.getElementById('customSecondCarrierField').style.display = document.getElementById('secondCarrier').value === 'custom' ? 'block' : 'none';
+  document.getElementById('customSecondCarrierField').style.display = (document.getElementById('secondCarrier').value === 'custom' && document.getElementById('enableSecondCarrier').checked) ? 'block' : 'none';
 }
 
 function calc() {
@@ -414,9 +466,9 @@ function calc() {
 
   const baPct = parseFloat(document.getElementById('baPct').value) || 0;
   const bbPct = parseFloat(document.getElementById('bbPct').value) || 0;
-  const extraSolventPct = parseFloat(document.getElementById('extraSolventPct').value) || 0;
+  const extraSolventPct = document.getElementById('enableExtraSolvent').checked ? parseFloat(document.getElementById('extraSolventPct').value) || 0 : 0;
 
-  const carrierMixPct = parseFloat(document.getElementById('carrierMixPct').value) || 0;
+  const carrierMixPct = document.getElementById('enableSecondCarrier').checked ? parseFloat(document.getElementById('carrierMixPct').value) || 0 : 0;
 
   const filterType = document.getElementById('filter').value;
   let filterLoss = 0;
@@ -438,7 +490,6 @@ function calc() {
 
   const remainingVol = totalBrewVol - compoundVol - baVol - bbVol - extraSolventVol;
 
-  // Carrier mix
   const mainCarrierRatio = (100 - carrierMixPct) / 100;
   const secondCarrierRatio = carrierMixPct / 100;
 
@@ -483,7 +534,8 @@ function calc() {
 
   // Chart
   const ctx = document.getElementById('pieChart').getContext('2d');
-  const data = [compoundVol, baVol, bbVol, extraSolventVol, mainCarrierVol + secondCarrierVol];
+  const carrierTotal = mainCarrierVol + secondCarrierVol;
+  const data = [compoundVol, baVol, bbVol, extraSolventVol, carrierTotal];
   const labels = ['Compound', 'BA', 'BB', 'Extra Solvent', 'Carrier Oil'];
   const colors = ['#c41e3a', '#e91e63', '#ff9800', '#ffeb3b', '#4caf50'];
 
@@ -535,10 +587,6 @@ function calc() {
 
 updateDisplacement();
 calc();
-document.getElementById('filter').addEventListener('change', calc);
-document.getElementById('extraSolventType').addEventListener('change', calc);
-document.getElementById('mainCarrier').addEventListener('change', calc);
-document.getElementById('secondCarrier').addEventListener('change', calc);
 </script>
 
 </body>
