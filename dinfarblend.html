@@ -47,177 +47,39 @@ body {
   flex-direction: column;
 }
 
-h1 {
-  margin: 0 0 6px;
-  font-size: 32px;
-  letter-spacing: 0.6px;
-  text-align: center;
-}
+h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center; }
+.subtitle { opacity: 0.7; margin-bottom: 26px; text-align: center; }
 
-.subtitle {
-  opacity: 0.7;
-  margin-bottom: 26px;
-  text-align: center;
-}
+.links { margin-bottom: 30px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.links a { padding: 12px 24px; background: rgba(196,30,58,0.2); border: 1px solid var(--accent); border-radius: 12px; color: #fff; text-decoration: none; font-weight: 600; transition: background 0.3s; }
+.links a:hover { background: rgba(196,30,58,0.4); }
+.links a.active { background: rgba(196,30,58,0.5); border-color: #fff; cursor: default; }
 
-.links {
-  margin-bottom: 30px;
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+.content { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; flex: 1; }
+.inputs { display: flex; flex-direction: column; gap: 18px; }
+.field { display: flex; flex-direction: column; }
+.field label { font-size: 13px; opacity: 0.8; margin-bottom: 8px; }
+.field input, .field select { width: 100%; padding: 18px 16px; border-radius: 14px; border: 1px solid var(--border); background: rgba(0,0,0,0.55); color: #fff; font-size: 18px; font-weight: 500; }
+.field input:focus, .field select:focus { outline: none; border-color: var(--accent); }
 
-.links a {
-  padding: 12px 24px;
-  background: rgba(196,30,58,0.2);
-  border: 1px solid var(--accent);
-  border-radius: 12px;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background 0.3s;
-}
+.outputs { display: flex; flex-direction: column; gap: 30px; }
+.results { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.result { background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 14px; padding: 20px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+.result span { display: block; font-size: 13px; opacity: 0.7; margin-bottom: 8px; }
+.result strong { font-size: 28px; color: var(--accent); }
+.final-yield { grid-column: 1 / -1; background: rgba(196,30,58,0.2); border: 2px solid var(--accent); padding: 30px; font-size: 32px; }
 
-.links a:hover {
-  background: rgba(196,30,58,0.4);
-}
+.chart-container { position: relative; height: 380px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
 
-.links a.active {
-  background: rgba(196,30,58,0.5);
-  border-color: #fff;
-  cursor: default;
-}
+.actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+.actions button { padding: 14px 28px; background: rgba(196,30,58,0.2); border: 1px solid var(--accent); border-radius: 12px; color: #fff; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+.actions button:hover { background: rgba(196,30,58,0.4); }
 
-.content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  flex: 1;
-}
-
-.inputs {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-}
-
-.field label {
-  font-size: 13px;
-  opacity: 0.8;
-  margin-bottom: 8px;
-}
-
-.field input, .field select {
-  width: 100%;
-  padding: 18px 16px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background: rgba(0,0,0,0.55);
-  color: #fff;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.field input:focus, .field select:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
-.outputs {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.results {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-.result {
-  background: rgba(0,0,0,0.5);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.result span {
-  display: block;
-  font-size: 13px;
-  opacity: 0.7;
-  margin-bottom: 8px;
-}
-
-.result strong {
-  font-size: 28px;
-  color: var(--accent);
-}
-
-.final-yield {
-  grid-column: 1 / -1;
-  background: rgba(196,30,58,0.2);
-  border: 2px solid var(--accent);
-  padding: 30px;
-  font-size: 32px;
-}
-
-.chart-container {
-  position: relative;
-  height: 380px;
-  background: rgba(0,0,0,0.5);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-}
-
-.actions {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
-
-.actions button {
-  padding: 14px 28px;
-  background: rgba(196,30,58,0.2);
-  border: 1px solid var(--accent);
-  border-radius: 12px;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.actions button:hover {
-  background: rgba(196,30,58,0.4);
-}
-
-.footer {
-  margin-top: 30px;
-  font-size: 11px;
-  opacity: 0.5;
-  text-align: right;
-}
+.footer { margin-top: 30px; font-size: 11px; opacity: 0.5; text-align: right; }
 
 @media (max-width: 900px) {
-  .content {
-    grid-template-columns: 1fr;
-  }
-  .results {
-    grid-template-columns: 1fr;
-  }
+  .content { grid-template-columns: 1fr; }
+  .results { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -230,7 +92,6 @@ h1 {
   <div class="links">
     <a href="index.html">Single Compound</a>
     <a href="dinfarblend.html" class="active">Blend Calculator</a>
-
   </div>
 
   <div class="content">
@@ -271,7 +132,6 @@ h1 {
           <option value="test-susp">Testosterone Suspension (water-based)</option>
           <option value="tren-a">Trenbolone Acetate</option>
           <option value="tren-e">Trenbolone Enanthate</option>
-          <option value="tren-e">Trenbolone Hex</option>
           <option value="deca">Nandrolone Decanoate (Deca)</option>
           <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
           <option value="eq">Boldenone Undecylenate (EQ)</option>
@@ -324,7 +184,6 @@ h1 {
           <option value="test-susp">Testosterone Suspension (water-based)</option>
           <option value="tren-a">Trenbolone Acetate</option>
           <option value="tren-e">Trenbolone Enanthate</option>
-          <option value="tren-e">Trenbolone Hex</option>
           <option value="deca">Nandrolone Decanoate (Deca)</option>
           <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
           <option value="eq">Boldenone Undecylenate (EQ)</option>
@@ -377,7 +236,6 @@ h1 {
           <option value="test-susp">Testosterone Suspension (water-based)</option>
           <option value="tren-a">Trenbolone Acetate</option>
           <option value="tren-e">Trenbolone Enanthate</option>
-          <option value="tren-e">Trenbolone Hex</option>
           <option value="deca">Nandrolone Decanoate (Deca)</option>
           <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
           <option value="eq">Boldenone Undecylenate (EQ)</option>
@@ -425,53 +283,69 @@ h1 {
       </div>
 
       <div class="field">
-        <label>Extra Solvent %</label>
-        <input id="bcPct" type="number" value="0" oninput="calc()">
+        <label>Extra Solvent % (e.g. Guaiacol, PEG)</label>
+        <input id="extraSolventPct" type="number" value="0" oninput="calc()">
       </div>
 
       <div class="field">
         <label>Extra Solvent Type</label>
-        <select id="extraSolvent" onchange="calc()">
-          <option value="none">None / Oil filler</option>
+        <select id="extraSolventType" onchange="calc()">
+          <option value="none">None</option>
           <option value="guaiacol">Guaiacol (1.129 g/ml)</option>
-          <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
           <option value="peg400">PEG 400 (1.128 g/ml)</option>
           <option value="dmso">DMSO (1.10 g/ml)</option>
-          <option value="castor">Castor Oil (~0.96 g/ml)</option>
-          <option value="gso">Grapeseed Oil (GSO) (~0.92 g/ml)</option>
-          <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
-          <option value="mct">MCT Oil (~0.95 g/ml)</option>
-          <option value="mig840">Miglyol 840 (~0.94 g/ml)</option>
-          <option value="mig812">Miglyol 812N (0.95 g/ml)</option>
-          <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
           <option value="ethyl-lactate">Ethyl L-Lactate (1.035 g/ml)</option>
           <option value="custom">Custom (manual density)</option>
         </select>
       </div>
 
-      <div class="field" id="customExtraField" style="display:none;">
-        <label>Custom Extra Density (g/ml)</label>
-        <input id="customExtraDensity" type="number" step="0.001" value="1.1" oninput="calc()">
+      <div class="field" id="customExtraSolventDensityField" style="display:none;">
+        <label>Custom Extra Solvent Density (g/ml)</label>
+        <input id="customExtraSolventDensity" type="number" step="0.001" value="1.1" oninput="calc()">
       </div>
 
       <div class="field">
-        <label>Carrier Oil / Solvent</label>
-        <select id="oil" onchange="calc()">
-          <option value="castor">Castor Oil (~0.96 g/ml)</option>
+        <label>Main Carrier Oil</label>
+        <select id="mainCarrier" onchange="calc()">
           <option value="gso">Grapeseed Oil (GSO) (~0.92 g/ml)</option>
-          <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
           <option value="mct">MCT Oil (~0.95 g/ml)</option>
+          <option value="castor">Castor Oil (~0.96 g/ml)</option>
+          <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
           <option value="mig840">Miglyol 840 (~0.94 g/ml)</option>
           <option value="mig812">Miglyol 812N (0.95 g/ml)</option>
           <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
-          <option value="ethyl-lactate">Ethyl L-Lactate (1.035 g/ml)</option>
           <option value="custom">Custom (manual density)</option>
         </select>
       </div>
 
-      <div class="field" id="customOilField" style="display:none;">
-        <label>Custom Carrier Density (g/ml)</label>
-        <input id="customOilDensity" type="number" step="0.001" value="0.92" oninput="calc()">
+      <div class="field" id="customMainCarrierField" style="display:none;">
+        <label>Custom Main Carrier Density (g/ml)</label>
+        <input id="customMainCarrierDensity" type="number" step="0.001" value="0.92" oninput="calc()">
+      </div>
+
+      <div class="field">
+        <label>Carrier Mix % (second oil)</label>
+        <input id="carrierMixPct" type="number" value="0" min="0" max="100" oninput="calc()">
+      </div>
+
+      <div class="field">
+        <label>Second Carrier Oil (for mix)</label>
+        <select id="secondCarrier" onchange="calc()">
+          <option value="none">None</option>
+          <option value="castor">Castor Oil (~0.96 g/ml)</option>
+          <option value="gso">Grapeseed Oil (GSO) (~0.92 g/ml)</option>
+          <option value="mct">MCT Oil (~0.95 g/ml)</option>
+          <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
+          <option value="mig840">Miglyol 840 (~0.94 g/ml)</option>
+          <option value="mig812">Miglyol 812N (0.95 g/ml)</option>
+          <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
+          <option value="custom">Custom (manual density)</option>
+        </select>
+      </div>
+
+      <div class="field" id="customSecondCarrierField" style="display:none;">
+        <label>Custom Second Carrier Density (g/ml)</label>
+        <input id="customSecondCarrierDensity" type="number" step="0.001" value="0.96" oninput="calc()">
       </div>
     </div>
 
@@ -508,19 +382,27 @@ h1 {
         </div>
         <div class="result">
           <span>Extra Solvent Volume</span>
-          <strong id="bcVol">0 ml</strong>
+          <strong id="extraSolventVol">0 ml</strong>
         </div>
         <div class="result">
           <span>Extra Solvent Weight</span>
-          <strong id="bcWeight">0 g</strong>
+          <strong id="extraSolventWeight">0 g</strong>
         </div>
         <div class="result">
-          <span>Carrier Volume</span>
-          <strong id="oilVol">0 ml</strong>
+          <span>Main Carrier Volume</span>
+          <strong id="mainCarrierVol">0 ml</strong>
         </div>
         <div class="result">
-          <span>Carrier Weight</span>
-          <strong id="oilWeight">0 g</strong>
+          <span>Main Carrier Weight</span>
+          <strong id="mainCarrierWeight">0 g</strong>
+        </div>
+        <div class="result">
+          <span>Second Carrier Volume</span>
+          <strong id="secondCarrierVol">0 ml</strong>
+        </div>
+        <div class="result">
+          <span>Second Carrier Weight</span>
+          <strong id="secondCarrierWeight">0 g</strong>
         </div>
 
         <!-- Right: Info -->
@@ -537,7 +419,7 @@ h1 {
           <strong id="checkVol">0 ml</strong>
         </div>
 
-        <!-- Final Yield - Full width -->
+        <!-- Final Yield -->
         <div class="result final-yield">
           <span>Final Yield</span>
           <strong id="finalYield">0 ml</strong>
@@ -554,7 +436,6 @@ h1 {
     <button onclick="downloadPDF()">Download as PDF</button>
     <button onclick="downloadDOCX()">Download as DOCX</button>
     <button onclick="goToSingle()">Go to Single Calc</button>
-
   </div>
 </div>
 
@@ -565,34 +446,31 @@ h1 {
 <script>
 const displacements = {
   "custom": 0.909,
-  "test-base": 0.909,
-  "test-p": 0.916,
-  "test-phenyl": 0.954,
+  "test-base": 0.893,
+  "test-p": 0.909,
+  "test-phenyl": 0.885,
   "test-c": 0.909,
   "test-e": 0.943,
   "test-iso": 0.935,
   "test-deca": 0.962,
   "test-susp": 1.000,
-  "test-undecanoate": 0.97,
   "tren-a": 0.848,
   "tren-e": 0.909,
-  "tren-hex": 0.909,
-  "nandrolone-base": 0.89,
   "deca": 0.962,
-  "npp": 0.877,
-  "eq": 0.952,
+  "npp": 0.909,
+  "eq": 0.909,
   "bold-cyp": 0.909,
   "masteron-p": 0.935,
-  "masteron-e": 0.962,
-  "primo-e": 0.952,
+  "masteron-e": 1.000,
+  "primo-e": 0.909,
   "trestolone": 0.900,
   "trestolone-a": 0.901,
-  "dhb": 0.97,
-  "winstrol": 0.885,
-  "dbol": 0.892,
-  "anadrol": 0.86,
-  "anavar": 0.9,
-  "tbol": 0.83,
+  "dhb": 0.909,
+  "winstrol": 0.750,
+  "dbol": 0.909,
+  "anadrol": 0.909,
+  "anavar": 0.909,
+  "tbol": 0.909,
   "sdrol": 0.909,
   "proviron": 0.909,
   "yk11": 0.820
@@ -629,21 +507,15 @@ function updateDisplacement(num) {
 }
 
 function showCustomFields() {
-  const filter = document.getElementById('filter').value;
-  document.getElementById('customLossField').style.display = filter === 'custom' ? 'block' : 'none';
-
-  const extra = document.getElementById('extraSolvent').value;
-  document.getElementById('customExtraField').style.display = extra === 'custom' ? 'block' : 'none';
-
-  const oil = document.getElementById('oil').value;
-  document.getElementById('customOilField').style.display = oil === 'custom' ? 'block' : 'none';
+  document.getElementById('customLossField').style.display = document.getElementById('filter').value === 'custom' ? 'block' : 'none';
+  document.getElementById('customExtraSolventDensityField').style.display = document.getElementById('extraSolventType').value === 'custom' ? 'block' : 'none';
+  document.getElementById('customMainCarrierField').style.display = document.getElementById('mainCarrier').value === 'custom' ? 'block' : 'none';
+  document.getElementById('customSecondCarrierField').style.display = document.getElementById('secondCarrier').value === 'custom' ? 'block' : 'none';
 }
 
 function goToSingle() {
   window.location.href = 'index.html';
 }
-
-
 
 function calc() {
   showCustomFields();
@@ -657,16 +529,9 @@ function calc() {
   else if (filterType === 'double') filterLoss = 2.5;
   else if (filterType === 'custom') filterLoss = parseFloat(document.getElementById('customLoss').value) || 0;
 
-  const extraType = document.getElementById('extraSolvent').value;
-  let extraDensity = densities[extraType] || 1.0;
-  if (extraType === 'custom') extraDensity = parseFloat(document.getElementById('customExtraDensity').value) || 1.0;
-
-  const oilType = document.getElementById('oil').value;
-  let oilDensity = densities[oilType] || 0.92;
-  if (oilType === 'custom') oilDensity = parseFloat(document.getElementById('customOilDensity').value) || 0.92;
-
   const totalBrewVol = desiredVol + filterLoss;
 
+  // Compounds
   const conc1 = parseFloat(document.getElementById('mgml1').value) || 0;
   const disp1 = parseFloat(document.getElementById('disp1').value) || 0;
   const purity1 = parseFloat(document.getElementById('purity1').value) || 100;
@@ -678,10 +543,6 @@ function calc() {
   const conc3 = parseFloat(document.getElementById('mgml3').value) || 0;
   const disp3 = parseFloat(document.getElementById('disp3').value) || 0;
   const purity3 = parseFloat(document.getElementById('purity3').value) || 100;
-
-  const baPct = parseFloat(document.getElementById('baPct').value) || 0;
-  const bbPct = parseFloat(document.getElementById('bbPct').value) || 0;
-  const extraPct = parseFloat(document.getElementById('bcPct').value) || 0;
 
   let powder1 = (totalBrewVol * conc1 / 1000) / (purity1 / 100);
   powder1 = conc1 > 0 ? powder1 : 0;
@@ -697,19 +558,46 @@ function calc() {
   const compoundVol3 = powder3 * disp3;
   const totalCompoundVol = compoundVol1 + compoundVol2 + compoundVol3;
 
+  // Solvents
+  const baPct = parseFloat(document.getElementById('baPct').value) || 0;
+  const bbPct = parseFloat(document.getElementById('bbPct').value) || 0;
+  const extraSolventPct = parseFloat(document.getElementById('extraSolventPct').value) || 0;
+
   const baVol = totalBrewVol * (baPct / 100);
   const bbVol = totalBrewVol * (bbPct / 100);
-  const extraVol = totalBrewVol * (extraPct / 100);
+  const extraSolventVol = totalBrewVol * (extraSolventPct / 100);
 
-  const oilVol = totalBrewVol - totalCompoundVol - baVol - bbVol - extraVol;
+  const remainingVol = totalBrewVol - totalCompoundVol - baVol - bbVol - extraSolventVol;
 
-  const check = totalCompoundVol + baVol + bbVol + extraVol + oilVol;
+  // Carrier mix
+  const carrierMixPct = parseFloat(document.getElementById('carrierMixPct').value) || 0;
 
+  const mainCarrierRatio = (100 - carrierMixPct) / 100;
+  const secondCarrierRatio = carrierMixPct / 100;
+
+  const mainCarrierVol = remainingVol * mainCarrierRatio;
+  const secondCarrierVol = remainingVol * secondCarrierRatio;
+
+  // Densities
+  let mainCarrierDensity = densities[document.getElementById('mainCarrier').value] || 0.92;
+  if (document.getElementById('mainCarrier').value === 'custom') mainCarrierDensity = parseFloat(document.getElementById('customMainCarrierDensity').value) || 0.92;
+
+  let secondCarrierDensity = densities[document.getElementById('secondCarrier').value] || 0.92;
+  if (document.getElementById('secondCarrier').value === 'custom') secondCarrierDensity = parseFloat(document.getElementById('customSecondCarrierDensity').value) || 0.92;
+
+  let extraSolventDensity = densities[document.getElementById('extraSolventType').value] || 1.0;
+  if (document.getElementById('extraSolventType').value === 'custom') extraSolventDensity = parseFloat(document.getElementById('customExtraSolventDensity').value) || 1.0;
+
+  // Weights
   const baWeight = baVol * densities.ba;
   const bbWeight = bbVol * densities.bb;
-  const extraWeight = extraVol * extraDensity;
-  const oilWeight = oilVol * oilDensity;
+  const extraSolventWeight = extraSolventVol * extraSolventDensity;
+  const mainCarrierWeight = mainCarrierVol * mainCarrierDensity;
+  const secondCarrierWeight = secondCarrierVol * secondCarrierDensity;
 
+  const check = totalCompoundVol + baVol + bbVol + extraSolventVol + mainCarrierVol + secondCarrierVol;
+
+  // Update UI
   document.getElementById('powder1').textContent = powder1.toFixed(3) + ' g';
   document.getElementById('powder2').textContent = powder2.toFixed(3) + ' g';
   document.getElementById('powder3').textContent = powder3.toFixed(3) + ' g';
@@ -718,17 +606,20 @@ function calc() {
   document.getElementById('baWeight').textContent = baWeight.toFixed(3) + ' g';
   document.getElementById('bbVol').textContent = bbVol.toFixed(2) + ' ml';
   document.getElementById('bbWeight').textContent = bbWeight.toFixed(3) + ' g';
-  document.getElementById('bcVol').textContent = extraVol.toFixed(2) + ' ml';
-  document.getElementById('bcWeight').textContent = extraWeight.toFixed(3) + ' g';
-  document.getElementById('oilVol').textContent = oilVol.toFixed(2) + ' ml';
-  document.getElementById('oilWeight').textContent = oilWeight.toFixed(3) + ' g';
+  document.getElementById('extraSolventVol').textContent = extraSolventVol.toFixed(2) + ' ml';
+  document.getElementById('extraSolventWeight').textContent = extraSolventWeight.toFixed(3) + ' g';
+  document.getElementById('mainCarrierVol').textContent = mainCarrierVol.toFixed(2) + ' ml';
+  document.getElementById('mainCarrierWeight').textContent = mainCarrierWeight.toFixed(3) + ' g';
+  document.getElementById('secondCarrierVol').textContent = secondCarrierVol.toFixed(2) + ' ml';
+  document.getElementById('secondCarrierWeight').textContent = secondCarrierWeight.toFixed(3) + ' g';
   document.getElementById('totalBrew').textContent = totalBrewVol.toFixed(2) + ' ml';
   document.getElementById('finalYield').textContent = desiredVol.toFixed(2) + ' ml';
   document.getElementById('checkVol').textContent = check.toFixed(2) + ' ml';
 
+  // Chart
   const ctx = document.getElementById('pieChart').getContext('2d');
-  const data = [totalCompoundVol, baVol, bbVol, extraVol, oilVol];
-  const labels = ['Compound Displacement', 'BA', 'BB', 'Extra Solvent', 'Carrier'];
+  const data = [totalCompoundVol, baVol, bbVol, extraSolventVol, mainCarrierVol + secondCarrierVol];
+  const labels = ['Compound Displacement', 'BA', 'BB', 'Extra Solvent', 'Carrier Oil'];
   const colors = ['#c41e3a', '#e91e63', '#ff9800', '#ffeb3b', '#4caf50'];
 
   const filteredData = [];
@@ -761,15 +652,7 @@ function calc() {
       maintainAspectRatio: false,
       cutout: '65%',
       plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            color: '#fff',
-            font: { size: 15 },
-            padding: 20,
-            usePointStyle: true
-          }
-        },
+        legend: { position: 'bottom', labels: { color: '#fff', font: { size: 15 }, padding: 20, usePointStyle: true } },
         tooltip: {
           callbacks: {
             label: function(context) {
@@ -790,11 +673,10 @@ updateDisplacement(2);
 updateDisplacement(3);
 calc();
 document.getElementById('filter').addEventListener('change', calc);
-document.getElementById('extraSolvent').addEventListener('change', calc);
-document.getElementById('oil').addEventListener('change', calc);
+document.getElementById('extraSolventType').addEventListener('change', calc);
+document.getElementById('mainCarrier').addEventListener('change', calc);
+document.getElementById('secondCarrier').addEventListener('change', calc);
 </script>
 
 </body>
 </html>
-
-
