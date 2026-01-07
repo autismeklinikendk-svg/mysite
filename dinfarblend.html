@@ -362,4 +362,381 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
         </div>
         <div class="field">
           <label>Second Carrier Oil</label>
-          <select id
+          <select id="secondCarrier" onchange="calc()">
+            <option value="none">None</option>
+            <option value="castor">Castor Oil (~0.96 g/ml)</option>
+            <option value="gso">Grapeseed Oil (GSO) (~0.92 g/ml)</option>
+            <option value="mct">MCT Oil (~0.95 g/ml)</option>
+            <option value="sesame">Sesame Oil (~0.92 g/ml)</option>
+            <option value="mig840">Miglyol 840 (~0.94 g/ml)</option>
+            <option value="mig812">Miglyol 812N (0.95 g/ml)</option>
+            <option value="eo">Ethyl Oleate (EO) (0.87 g/ml)</option>
+            <option value="custom">Custom (manual density)</option>
+          </select>
+        </div>
+        <div class="field" id="customSecondCarrierField" style="display:none;">
+          <label>Custom Second Carrier Density (g/ml)</label>
+          <input id="customSecondCarrierDensity" type="number" step="0.001" value="0.96" oninput="calc()">
+        </div>
+      </div>
+    </div>
+
+    <div class="outputs">
+      <div class="results">
+        <!-- Left: What you add -->
+        <div class="result powder">
+          <span>Compound 1 Powder</span>
+          <strong id="powder1">0 g</strong>
+        </div>
+        <div class="result powder hidden" id="powder2Result">
+          <span>Compound 2 Powder</span>
+          <strong id="powder2">0 g</strong>
+        </div>
+        <div class="result powder hidden" id="powder3Result">
+          <span>Compound 3 Powder</span>
+          <strong id="powder3">0 g</strong>
+        </div>
+
+        <div class="result solvent">
+          <span>BA Volume</span>
+          <strong id="baVol">0 ml</strong>
+        </div>
+        <div class="result solvent">
+          <span>BA Weight</span>
+          <strong id="baWeight">0 g</strong>
+        </div>
+        <div class="result solvent">
+          <span>BB Volume</span>
+          <strong id="bbVol">0 ml</strong>
+        </div>
+        <div class="result solvent">
+          <span>BB Weight</span>
+          <strong id="bbWeight">0 g</strong>
+        </div>
+
+        <div class="result solvent hidden" id="extraSolventVolResult">
+          <span>Extra Solvent Volume</span>
+          <strong id="extraSolventVol">0 ml</strong>
+        </div>
+        <div class="result solvent hidden" id="extraSolventWeightResult">
+          <span>Extra Solvent Weight</span>
+          <strong id="extraSolventWeight">0 g</strong>
+        </div>
+
+        <div class="result carrier">
+          <span>Main Carrier Volume</span>
+          <strong id="mainCarrierVol">0 ml</strong>
+        </div>
+        <div class="result carrier">
+          <span>Main Carrier Weight</span>
+          <strong id="mainCarrierWeight">0 g</strong>
+        </div>
+
+        <div class="result carrier hidden" id="secondCarrierVolResult">
+          <span>Second Carrier Volume</span>
+          <strong id="secondCarrierVol">0 ml</strong>
+        </div>
+        <div class="result carrier hidden" id="secondCarrierWeightResult">
+          <span>Second Carrier Weight</span>
+          <strong id="secondCarrierWeight">0 g</strong>
+        </div>
+
+        <!-- Right: Info -->
+        <div class="result">
+          <span>Total Compound Volume</span>
+          <strong id="compoundVol">0 ml</strong>
+        </div>
+        <div class="result">
+          <span>Total Brew Volume</span>
+          <strong id="totalBrew">0 ml</strong>
+        </div>
+        <div class="result">
+          <span>Volume Check</span>
+          <strong id="checkVol">0 ml</strong>
+        </div>
+
+        <!-- Final Yield -->
+        <div class="result final-yield">
+          <span>Final Yield</span>
+          <strong id="finalYield">0 ml</strong>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="pieChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button onclick="downloadPDF()">Download as PDF</button>
+    <button onclick="downloadDOCX()">Download as DOCX</button>
+    <button onclick="goToSingle()">Go to Single Calc</button>
+  </div>
+</div>
+
+<div class="footer">
+  Dinfar Brew ©
+</div>
+
+<script>
+const displacements = {
+  "custom": 0.909,
+  "test-base": 0.909,
+  "test-p": 0.916,
+  "test-phenyl": 0.954,
+  "test-c": 0.909,
+  "test-e": 0.943,
+  "test-iso": 0.935,
+  "test-deca": 0.962,
+  "test-susp": 1.000,
+  "test-undecanoate": 0.97,
+  "tren-a": 0.848,
+  "tren-e": 0.909,
+  "tren-hex": 0.909,
+  "nandrolone-base": 0.89,
+  "deca": 0.962,
+  "npp": 0.877,
+  "eq": 0.952,
+  "bold-cyp": 0.909,
+  "masteron-p": 0.935,
+  "masteron-e": 0.962,
+  "primo-e": 0.952,
+  "trestolone": 0.900,
+  "trestolone-a": 0.901,
+  "dhb": 0.97,
+  "winstrol": 0.885,
+  "dbol": 0.892,
+  "anadrol": 0.86,
+  "anavar": 0.9,
+  "tbol": 0.83,
+  "sdrol": 0.909,
+  "proviron": 0.909,
+  "yk11": 0.820
+};
+
+const densities = {
+  ba: 1.044,
+  bb: 1.118,
+  castor: 0.96,
+  gso: 0.92,
+  sesame: 0.92,
+  mct: 0.95,
+  mig840: 0.94,
+  mig812: 0.95,
+  eo: 0.87,
+  'ethyl-lactate': 1.035,
+  guaiacol: 1.129,
+  peg400: 1.128,
+  dmso: 1.10,
+  none: 1.0
+};
+
+let chart;
+
+function updateDisplacement(num) {
+  const select = document.getElementById(`compound${num}`);
+  const dispInput = document.getElementById(`disp${num}`);
+  const selected = select.value;
+  
+  if (selected !== "custom") {
+    dispInput.value = displacements[selected].toFixed(3);
+  }
+  calc();
+}
+
+function toggleCompound(num) {
+  const checked = document.getElementById(`enableCompound${num}`).checked;
+  document.getElementById(`compound${num}Group`).classList.toggle('hidden', !checked);
+  document.getElementById(`powder${num}Result`).classList.toggle('hidden', !checked);
+  if (!checked) {
+    document.getElementById(`mgml${num}`).value = 0;
+  }
+  calc();
+}
+
+function toggleExtraSolvent() {
+  const checked = document.getElementById('enableExtraSolvent').checked;
+  document.getElementById('extraSolventGroup').classList.toggle('hidden', !checked);
+  document.getElementById('extraSolventVolResult').classList.toggle('hidden', !checked);
+  document.getElementById('extraSolventWeightResult').classList.toggle('hidden', !checked);
+  if (!checked) {
+    document.getElementById('extraSolventPct').value = 0;
+    document.getElementById('extraSolventType').value = 'none';
+  }
+  calc();
+}
+
+function toggleSecondCarrier() {
+  const checked = document.getElementById('enableSecondCarrier').checked;
+  document.getElementById('secondCarrierGroup').classList.toggle('hidden', !checked);
+  document.getElementById('secondCarrierVolResult').classList.toggle('hidden', !checked);
+  document.getElementById('secondCarrierWeightResult').classList.toggle('hidden', !checked);
+  if (!checked) {
+    document.getElementById('carrierMixPct').value = 0;
+    document.getElementById('secondCarrier').value = 'none';
+  }
+  calc();
+}
+
+function showCustomFields() {
+  document.getElementById('customLossField').style.display = document.getElementById('filter').value === 'custom' ? 'block' : 'none';
+  document.getElementById('customExtraSolventDensityField').style.display = (document.getElementById('extraSolventType').value === 'custom' && document.getElementById('enableExtraSolvent').checked) ? 'block' : 'none';
+  document.getElementById('customMainCarrierField').style.display = document.getElementById('mainCarrier').value === 'custom' ? 'block' : 'none';
+  document.getElementById('customSecondCarrierField').style.display = (document.getElementById('secondCarrier').value === 'custom' && document.getElementById('enableSecondCarrier').checked) ? 'block' : 'none';
+}
+
+function calc() {
+  showCustomFields();
+
+  const desiredVol = parseFloat(document.getElementById('totalVol').value) || 0;
+
+  const filterType = document.getElementById('filter').value;
+  let filterLoss = 0;
+  if (filterType === '0.45') filterLoss = 1.0;
+  else if (filterType === '0.22') filterLoss = 1.6;
+  else if (filterType === 'double') filterLoss = 2.5;
+  else if (filterType === 'custom') filterLoss = parseFloat(document.getElementById('customLoss').value) || 0;
+
+  const totalBrewVol = desiredVol + filterLoss;
+
+  // Compounds
+  const enable2 = document.getElementById('enableCompound2').checked;
+  const enable3 = document.getElementById('enableCompound3').checked;
+
+  const conc1 = parseFloat(document.getElementById('mgml1').value) || 0;
+  const disp1 = parseFloat(document.getElementById('disp1').value) || 0;
+  const purity1 = parseFloat(document.getElementById('purity1').value) || 100;
+
+  const conc2 = enable2 ? parseFloat(document.getElementById('mgml2').value) || 0 : 0;
+  const disp2 = enable2 ? parseFloat(document.getElementById('disp2').value) || 0 : 0;
+  const purity2 = enable2 ? parseFloat(document.getElementById('purity2').value) || 100 : 100;
+
+  const conc3 = enable3 ? parseFloat(document.getElementById('mgml3').value) || 0 : 0;
+  const disp3 = enable3 ? parseFloat(document.getElementById('disp3').value) || 0 : 0;
+  const purity3 = enable3 ? parseFloat(document.getElementById('purity3').value) || 100 : 100;
+
+  let powder1 = (totalBrewVol * conc1 / 1000) / (purity1 / 100);
+  powder1 = conc1 > 0 ? powder1 : 0;
+
+  let powder2 = (totalBrewVol * conc2 / 1000) / (purity2 / 100);
+  powder2 = conc2 > 0 ? powder2 : 0;
+
+  let powder3 = (totalBrewVol * conc3 / 1000) / (purity3 / 100);
+  powder3 = conc3 > 0 ? powder3 : 0;
+
+  const compoundVol1 = powder1 * disp1;
+  const compoundVol2 = powder2 * disp2;
+  const compoundVol3 = powder3 * disp3;
+  const totalCompoundVol = compoundVol1 + compoundVol2 + compoundVol3;
+
+  // Solvents
+  const baPct = parseFloat(document.getElementById('baPct').value) || 0;
+  const bbPct = parseFloat(document.getElementById('bbPct').value) || 0;
+  const extraSolventPct = document.getElementById('enableExtraSolvent').checked ? parseFloat(document.getElementById('extraSolventPct').value) || 0 : 0;
+
+  const baVol = totalBrewVol * (baPct / 100);
+  const bbVol = totalBrewVol * (bbPct / 100);
+  const extraSolventVol = totalBrewVol * (extraSolventPct / 100);
+
+  const remainingVol = totalBrewVol - totalCompoundVol - baVol - bbVol - extraSolventVol;
+
+  // Carrier mix
+  const carrierMixPct = document.getElementById('enableSecondCarrier').checked ? parseFloat(document.getElementById('carrierMixPct').value) || 0 : 0;
+
+  const mainCarrierRatio = (100 - carrierMixPct) / 100;
+  const secondCarrierRatio = carrierMixPct / 100;
+
+  const mainCarrierVol = remainingVol * mainCarrierRatio;
+  const secondCarrierVol = remainingVol * secondCarrierRatio;
+
+  // Densities
+  let mainCarrierDensity = densities[document.getElementById('mainCarrier').value] || 0.92;
+  if (document.getElementById('mainCarrier').value === 'custom') mainCarrierDensity = parseFloat(document.getElementById('customMainCarrierDensity').value) || 0.92;
+
+  let secondCarrierDensity = densities[document.getElementById('secondCarrier').value] || 0.92;
+  if (document.getElementById('secondCarrier').value === 'custom') secondCarrierDensity = parseFloat(document.getElementById('customSecondCarrierDensity').value) || 0.92;
+
+  let extraSolventDensity = densities[document.getElementById('extraSolventType').value] || 1.0;
+  if (document.getElementById('extraSolventType').value === 'custom') extraSolventDensity = parseFloat(document.getElementById('customExtraSolventDensity').value) || 1.0;
+
+  // Weights
+  const baWeight = baVol * densities.ba;
+  const bbWeight = bbVol * densities.bb;
+  const extraSolventWeight = extraSolventVol * extraSolventDensity;
+  const mainCarrierWeight = mainCarrierVol * mainCarrierDensity;
+  const secondCarrierWeight = secondCarrierVol * secondCarrierDensity;
+
+  const check = totalCompoundVol + baVol + bbVol + extraSolventVol + mainCarrierVol + secondCarrierVol;
+
+  // Update UI
+  document.getElementById('powder1').textContent = powder1.toFixed(3) + ' g';
+  document.getElementById('powder2').textContent = powder2.toFixed(3) + ' g';
+  document.getElementById('powder3').textContent = powder3.toFixed(3) + ' g';
+  document.getElementById('compoundVol').textContent = totalCompoundVol.toFixed(3) + ' ml';
+  document.getElementById('baVol').textContent = baVol.toFixed(2) + ' ml';
+  document.getElementById('baWeight').textContent = baWeight.toFixed(3) + ' g';
+  document.getElementById('bbVol').textContent = bbVol.toFixed(2) + ' ml';
+  document.getElementById('bbWeight').textContent = bbWeight.toFixed(3) + ' g';
+  document.getElementById('extraSolventVol').textContent = extraSolventVol.toFixed(2) + ' ml';
+  document.getElementById('extraSolventWeight').textContent = extraSolventWeight.toFixed(3) + ' g';
+  document.getElementById('mainCarrierVol').textContent = mainCarrierVol.toFixed(2) + ' ml';
+  document.getElementById('mainCarrierWeight').textContent = mainCarrierWeight.toFixed(3) + ' g';
+  document.getElementById('secondCarrierVol').textContent = secondCarrierVol.toFixed(2) + ' ml';
+  document.getElementById('secondCarrierWeight').textContent = secondCarrierWeight.toFixed(3) + ' g';
+  document.getElementById('totalBrew').textContent = totalBrewVol.toFixed(2) + ' ml';
+  document.getElementById('finalYield').textContent = desiredVol.toFixed(2) + ' ml';
+  document.getElementById('checkVol').textContent = check.toFixed(2) + ' ml';
+
+  // Chart
+  const ctx = document.getElementById('pieChart').getContext('2d');
+  const carrierTotal = mainCarrierVol + secondCarrierVol;
+  const data = [totalCompoundVol, baVol, bbVol, extraSolventVol > 0.01 ? extraSolventVol : 0, carrierTotal];
+  const labels = ['Compound Displacement', 'BA', 'BB', extraSolventVol > 0.01 ? 'Extra Solvent' : null, 'Carrier Oil'].filter(Boolean);
+  const colors = ['#c41e3a', '#e91e63', '#ff9800', extraSolventVol > 0.01 ? '#ffeb3b' : null, '#4caf50'].filter(Boolean);
+
+  const filteredData = data.filter(val => val > 0.01);
+  const filteredLabels = labels.filter((_, i) => data[i] > 0.01);
+  const filteredColors = colors.filter((_, i) => data[i] > 0.01);
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: filteredLabels,
+      datasets: [{
+        data: filteredData,
+        backgroundColor: filteredColors,
+        borderColor: '#111',
+        borderWidth: 3,
+        hoverBorderWidth: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '65%',
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#fff', font: { size: 15 }, padding: 20, usePointStyle: true } },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const value = context.parsed;
+              const total = context.dataset.data.reduce((a, b) => a + b, 0);
+              const percentage = ((value / total) * 100).toFixed(1);
+              return `${context.label}: ${value.toFixed(3)} ml (${percentage}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+updateDisplacement(1);
+calc();
+</script>
+
+</body>
+</html>
