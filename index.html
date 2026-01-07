@@ -574,9 +574,15 @@ function calc() {
 
   const baVol = totalBrewVol * (baPct / 100);
   const bbVol = totalBrewVol * (bbPct / 100);
-  const extraVol = totalBrewVol * (extraPct / 100);
 
-  const oilVol = totalBrewVol - compoundVol - baVol - bbVol - extraVol;
+  // Available volume for solvents/carrier
+  const solventSpace = totalBrewVol - compoundVol - baVol - bbVol;
+
+  // Extra solvent takes extraPct of the solvent space
+  const extraVol = solventSpace * (extraPct / 100);
+
+  // Carrier gets the remaining solvent space
+  const oilVol = solventSpace - extraVol;
 
   const check = compoundVol + baVol + bbVol + extraVol + oilVol;
 
@@ -585,6 +591,7 @@ function calc() {
   const extraWeight = extraVol * extraDensity;
   const oilWeight = oilVol * oilDensity;
 
+  // Update display...
   document.getElementById('powder').textContent = powder.toFixed(3) + ' g';
   document.getElementById('compoundVol').textContent = compoundVol.toFixed(3) + ' ml';
   document.getElementById('baVol').textContent = baVol.toFixed(2) + ' ml';
@@ -598,6 +605,9 @@ function calc() {
   document.getElementById('totalBrew').textContent = totalBrewVol.toFixed(2) + ' ml';
   document.getElementById('finalYield').textContent = desiredVol.toFixed(2) + ' ml';
   document.getElementById('checkVol').textContent = check.toFixed(2) + ' ml';
+
+  // Chart update remains the same
+
 
   const ctx = document.getElementById('pieChart').getContext('2d');
   const data = [compoundVol, baVol, bbVol, extraVol, oilVol];
@@ -667,5 +677,6 @@ document.getElementById('oil').addEventListener('change', calc);
 
 </body>
 </html>
+
 
 
