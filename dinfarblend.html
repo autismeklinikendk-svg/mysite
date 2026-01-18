@@ -131,9 +131,11 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
           <option value="test-deca">Testosterone Decanoate</option>
           <option value="test-undecanoate">Testosterone Undecanoate</option>
           <option value="test-susp">Testosterone Suspension (water-based)</option>
+          <option value="tren-base">Trenbolone Base</option>
           <option value="tren-a">Trenbolone Acetate</option>
           <option value="tren-e">Trenbolone Enanthate</option>
           <option value="tren-hex">Trenbolone Hexahydrobenzylcarbonate</option>
+          <option value="mTren">Methyltrienolone (MTREN)</option>
           <option value="nandrolone-base">Nandrolone Base</option>
           <option value="deca">Nandrolone Decanoate (Deca)</option>
           <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
@@ -145,6 +147,15 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
           <option value="trestolone">Trestolone (MENT)</option>
           <option value="trestolone-a">Trestolone Acetate</option>
           <option value="dhb">1-Testosterone Cypionate (DHB)</option>
+          <option value="progesterone">Progesterone</option>
+          <option value="dhea">Dhea</option>
+          <option value="7dhea">7-Keto-Dhea</option>
+          <option value="dhea-sulf">Dhea Sulfate</option>
+          <option value="est-ace">Estrogen Acetate</option>
+          <option value="est-enan">Estrogen Enanthate</option>              
+          <option value="est-cyp">Estrogen Cypionate</option>
+          <option value="est-udy">Estrogen undecylenate</option>
+          <option value="est-val">Estrogen valerate</option>
           <option value="winstrol">Winstrol (Stanozolol) - Injectable</option>
           <option value="dbol">Dianabol (Methandrostenolone) - Injectable</option>
           <option value="anadrol">Anadrol (Oxymetholone) - Injectable</option>
@@ -181,38 +192,49 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
         <div class="field">
           <label>Compound 2</label>
           <select id="compound2" onchange="updateDisplacement(2); calc()">
-            <option value="custom">Custom (manual displacement)</option>
-            <option value="test-base">Testosterone Base</option>
-            <option value="test-p">Testosterone Propionate</option>
-            <option value="test-phenyl">Testosterone Phenylpropionate</option>
-            <option value="test-c">Testosterone Cypionate</option>
-            <option value="test-e">Testosterone Enanthate</option>
-            <option value="test-iso">Testosterone Isocaproate</option>
-            <option value="test-deca">Testosterone Decanoate</option>
-            <option value="test-undecanoate">Testosterone Undecanoate</option>
-            <option value="test-susp">Testosterone Suspension (water-based)</option>
-            <option value="tren-a">Trenbolone Acetate</option>
-            <option value="tren-e">Trenbolone Enanthate</option>
-            <option value="tren-hex">Trenbolone Hexahydrobenzylcarbonate</option>
-            <option value="nandrolone-base">Nandrolone Base</option>
-            <option value="deca">Nandrolone Decanoate (Deca)</option>
-            <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
-            <option value="eq">Boldenone Undecylenate (EQ)</option>
-            <option value="bold-cyp">Boldenone Cypionate</option>
-            <option value="masteron-p">Drostanolone Propionate (Masteron P)</option>
-            <option value="masteron-e">Drostanolone Enanthate (Masteron E)</option>
-            <option value="primo-e">Methenolone Enanthate (Primobolan)</option>
-            <option value="trestolone">Trestolone (MENT)</option>
-            <option value="trestolone-a">Trestolone Acetate</option>
-            <option value="dhb">1-Testosterone Cypionate (DHB)</option>
-            <option value="winstrol">Winstrol (Stanozolol) - Injectable</option>
-            <option value="dbol">Dianabol (Methandrostenolone) - Injectable</option>
-            <option value="anadrol">Anadrol (Oxymetholone) - Injectable</option>
-            <option value="anavar">Anavar (Oxandrolone) - Injectable</option>
-            <option value="tbol">Turinabol (Chlorodehydromethyltestosterone) - Injectable</option>
-            <option value="sdrol">Superdrol (Methasterone) - Injectable</option>
-            <option value="proviron">Proviron (Mesterolone) - Injectable</option>
-            <option value="yk11">YK-11 - Injectable</option>
+          <option value="custom">Custom (manual displacement)</option>
+          <option value="test-base">Testosterone Base</option>
+          <option value="test-p">Testosterone Propionate</option>
+          <option value="test-phenyl">Testosterone Phenylpropionate</option>
+          <option value="test-c">Testosterone Cypionate</option>
+          <option value="test-e">Testosterone Enanthate</option>
+          <option value="test-iso">Testosterone Isocaproate</option>
+          <option value="test-deca">Testosterone Decanoate</option>
+          <option value="test-undecanoate">Testosterone Undecanoate</option>
+          <option value="test-susp">Testosterone Suspension (water-based)</option>
+          <option value="tren-base">Trenbolone Base</option>
+          <option value="tren-a">Trenbolone Acetate</option>
+          <option value="tren-e">Trenbolone Enanthate</option>
+          <option value="tren-hex">Trenbolone Hexahydrobenzylcarbonate</option>
+          <option value="mTren">Methyltrienolone (MTREN)</option>
+          <option value="nandrolone-base">Nandrolone Base</option>
+          <option value="deca">Nandrolone Decanoate (Deca)</option>
+          <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
+          <option value="eq">Boldenone Undecylenate (EQ)</option>
+          <option value="bold-cyp">Boldenone Cypionate</option>
+          <option value="masteron-p">Drostanolone Propionate (Masteron P)</option>
+          <option value="masteron-e">Drostanolone Enanthate (Masteron E)</option>
+          <option value="primo-e">Methenolone Enanthate (Primobolan)</option>
+          <option value="trestolone">Trestolone (MENT)</option>
+          <option value="trestolone-a">Trestolone Acetate</option>
+          <option value="dhb">1-Testosterone Cypionate (DHB)</option>
+          <option value="progesterone">Progesterone</option>
+          <option value="dhea">Dhea</option>
+          <option value="7dhea">7-Keto-Dhea</option>
+          <option value="dhea-sulf">Dhea Sulfate</option>
+          <option value="est-ace">Estrogen Acetate</option>
+          <option value="est-enan">Estrogen Enanthate</option>              
+          <option value="est-cyp">Estrogen Cypionate</option>
+          <option value="est-udy">Estrogen undecylenate</option>
+          <option value="est-val">Estrogen valerate</option>
+          <option value="winstrol">Winstrol (Stanozolol) - Injectable</option>
+          <option value="dbol">Dianabol (Methandrostenolone) - Injectable</option>
+          <option value="anadrol">Anadrol (Oxymetholone) - Injectable</option>
+          <option value="anavar">Anavar (Oxandrolone) - Injectable</option>
+          <option value="tbol">Turinabol (Chlorodehydromethyltestosterone) - Injectable</option>
+          <option value="sdrol">Superdrol (Methasterone) - Injectable</option>
+          <option value="proviron">Proviron (Mesterolone) - Injectable</option>
+          <option value="yk11">YK-11 - Injectable</option>
           </select>
         </div>
 
@@ -242,38 +264,49 @@ h1 { margin: 0 0 6px; font-size: 32px; letter-spacing: 0.6px; text-align: center
         <div class="field">
           <label>Compound 3</label>
           <select id="compound3" onchange="updateDisplacement(3); calc()">
-            <option value="custom">Custom (manual displacement)</option>
-            <option value="test-base">Testosterone Base</option>
-            <option value="test-p">Testosterone Propionate</option>
-            <option value="test-phenyl">Testosterone Phenylpropionate</option>
-            <option value="test-c">Testosterone Cypionate</option>
-            <option value="test-e">Testosterone Enanthate</option>
-            <option value="test-iso">Testosterone Isocaproate</option>
-            <option value="test-deca">Testosterone Decanoate</option>
-            <option value="test-undecanoate">Testosterone Undecanoate</option>
-            <option value="test-susp">Testosterone Suspension (water-based)</option>
-            <option value="tren-a">Trenbolone Acetate</option>
-            <option value="tren-e">Trenbolone Enanthate</option>
-            <option value="tren-hex">Trenbolone Hexahydrobenzylcarbonate</option>
-            <option value="nandrolone-base">Nandrolone Base</option>
-            <option value="deca">Nandrolone Decanoate (Deca)</option>
-            <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
-            <option value="eq">Boldenone Undecylenate (EQ)</option>
-            <option value="bold-cyp">Boldenone Cypionate</option>
-            <option value="masteron-p">Drostanolone Propionate (Masteron P)</option>
-            <option value="masteron-e">Drostanolone Enanthate (Masteron E)</option>
-            <option value="primo-e">Methenolone Enanthate (Primobolan)</option>
-            <option value="trestolone">Trestolone (MENT)</option>
-            <option value="trestolone-a">Trestolone Acetate</option>
-            <option value="dhb">1-Testosterone Cypionate (DHB)</option>
-            <option value="winstrol">Winstrol (Stanozolol) - Injectable</option>
-            <option value="dbol">Dianabol (Methandrostenolone) - Injectable</option>
-            <option value="anadrol">Anadrol (Oxymetholone) - Injectable</option>
-            <option value="anavar">Anavar (Oxandrolone) - Injectable</option>
-            <option value="tbol">Turinabol (Chlorodehydromethyltestosterone) - Injectable</option>
-            <option value="sdrol">Superdrol (Methasterone) - Injectable</option>
-            <option value="proviron">Proviron (Mesterolone) - Injectable</option>
-            <option value="yk11">YK-11 - Injectable</option>
+          <option value="custom">Custom (manual displacement)</option>
+          <option value="test-base">Testosterone Base</option>
+          <option value="test-p">Testosterone Propionate</option>
+          <option value="test-phenyl">Testosterone Phenylpropionate</option>
+          <option value="test-c">Testosterone Cypionate</option>
+          <option value="test-e">Testosterone Enanthate</option>
+          <option value="test-iso">Testosterone Isocaproate</option>
+          <option value="test-deca">Testosterone Decanoate</option>
+          <option value="test-undecanoate">Testosterone Undecanoate</option>
+          <option value="test-susp">Testosterone Suspension (water-based)</option>
+          <option value="tren-base">Trenbolone Base</option>
+          <option value="tren-a">Trenbolone Acetate</option>
+          <option value="tren-e">Trenbolone Enanthate</option>
+          <option value="tren-hex">Trenbolone Hexahydrobenzylcarbonate</option>
+          <option value="mTren">Methyltrienolone (MTREN)</option>
+          <option value="nandrolone-base">Nandrolone Base</option>
+          <option value="deca">Nandrolone Decanoate (Deca)</option>
+          <option value="npp">Nandrolone Phenylpropionate (NPP)</option>
+          <option value="eq">Boldenone Undecylenate (EQ)</option>
+          <option value="bold-cyp">Boldenone Cypionate</option>
+          <option value="masteron-p">Drostanolone Propionate (Masteron P)</option>
+          <option value="masteron-e">Drostanolone Enanthate (Masteron E)</option>
+          <option value="primo-e">Methenolone Enanthate (Primobolan)</option>
+          <option value="trestolone">Trestolone (MENT)</option>
+          <option value="trestolone-a">Trestolone Acetate</option>
+          <option value="dhb">1-Testosterone Cypionate (DHB)</option>
+          <option value="progesterone">Progesterone</option>
+          <option value="dhea">Dhea</option>
+          <option value="7dhea">7-Keto-Dhea</option>
+          <option value="dhea-sulf">Dhea Sulfate</option>
+          <option value="est-ace">Estrogen Acetate</option>
+          <option value="est-enan">Estrogen Enanthate</option>              
+          <option value="est-cyp">Estrogen Cypionate</option>
+          <option value="est-udy">Estrogen undecylenate</option>
+          <option value="est-val">Estrogen valerate</option>
+          <option value="winstrol">Winstrol (Stanozolol) - Injectable</option>
+          <option value="dbol">Dianabol (Methandrostenolone) - Injectable</option>
+          <option value="anadrol">Anadrol (Oxymetholone) - Injectable</option>
+          <option value="anavar">Anavar (Oxandrolone) - Injectable</option>
+          <option value="tbol">Turinabol (Chlorodehydromethyltestosterone) - Injectable</option>
+          <option value="sdrol">Superdrol (Methasterone) - Injectable</option>
+          <option value="proviron">Proviron (Mesterolone) - Injectable</option>
+          <option value="yk11">YK-11 - Injectable</option>
           </select>
         </div>
 
@@ -493,7 +526,18 @@ const displacements = {
   "test-iso": 0.935,
   "test-deca": 0.962,
   "test-susp": 1.000,
+  "progesterone": 0.854,
+  "dhea": 0.893,
+  "dhea-sulf": 0.85,
+  "7dhea": 0.84,
+  "mTren": 0.855,
+  "est-val": 0.91,
+  "est-udy": 0.935,
+  "est-ace": 0.865,
+  "est-cyp": 0.869,
+  "est-enan": 0.9,
   "test-undecanoate": 0.97,
+  "tren-base": 0.841,
   "tren-a": 0.848,
   "tren-e": 0.909,
   "tren-hex": 0.909,
@@ -736,3 +780,4 @@ calc();
 
 </body>
 </html>
+
